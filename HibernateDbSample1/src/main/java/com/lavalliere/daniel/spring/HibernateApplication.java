@@ -31,8 +31,8 @@ public class HibernateApplication {
         // Get a message to enter into the database:
         // A simple text scanner which can parse primitive types and strings using regular expressions.
         //
-        // A Scanner breaks its input into tokens using a delimiter pattern, which by default matches whitespace.
-        // The resulting tokens may then be converted into values of different types using the various next methods.
+            // A Scanner breaks its input into tokens using a delimiter pattern, which by default matches whitespace.
+            // The resulting tokens may then be converted into values of different types using the various next methods.
         Scanner in = new Scanner(System.in);
         String m = "";
         System.out.println("Enter a message: ");
