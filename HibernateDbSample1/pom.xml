@@ -25,6 +25,26 @@
             <version>5.4.30.Final</version>
             <type>pom</type>
         </dependency>
+
+        <!-- Refer to https://www.tutorialspoint.com/hibernate/hibernate_annotations.htm -->
+        <!--
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-annotations</artifactId>
+            <version>3.5.6-Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-commons-annotations</artifactId>
+            <version>3.2.0.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>ejb3-persistence</artifactId>
+            <version>1.0.2.GA</version>
+            <type>pom</type>
+        </dependency>
+        -->
     </dependencies>
 
     <build>
