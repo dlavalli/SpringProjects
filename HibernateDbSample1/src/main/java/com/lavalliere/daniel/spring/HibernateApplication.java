@@ -42,7 +42,11 @@ public class HibernateApplication {
             // Setting up the configuration to connect to the rdbms databse
             // Using the mappings and properties specified in an application resource
             // named hibernate.cfg.xml.
-            Configuration conf = new Configuration().configure();
+
+            // NOTE: It is important to add all the resource configuration here as they are not
+            //       correctly detected (at least with the IntelliJ setup) if hibernate is left
+            //       to scan these files itself
+            Configuration conf = new Configuration().addResource("Message.hbm.xml").configure();
 
             // Apply a groups of incoming setting values.
             registry = new StandardServiceRegistryBuilder().applySettings(

@@ -36,7 +36,7 @@
                 <version>3.3.0</version>
                 <configuration>
                     <descriptorRefs>
-                        <descriptorRef>fatjar</descriptorRef>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
                     <archive>
                         <manifest>

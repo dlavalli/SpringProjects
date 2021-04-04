@@ -4,20 +4,15 @@
         "http://hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 
 <hibernate-configuration>
-    <!-- See https://docs.jboss.org/hibernate/orm/3.3/reference/en/html/session-configuration.html -->
     <session-factory>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/MessageRepository</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/MessageRepository?zeroDateTimeBehavior=convertToNull</property>
         <property name="hibernate.connection.username">daniel</property>
         <property name="hibernate.connection.password">Qwop1290</property>
-
-        <!-- Just for debugging -->
         <property name="hibernate.show_sql">true</property>
-
-        <property name="hibernate.connection.pool_size">1</property>
         <property name="hibernate.current_session_context_class">thread</property>
-        <property name="hibernate.query.factory_class">org.hibernate.hql.classic.ClassicQueryTranslatorFactory</property>
-        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
-        <mapping resource="Messages.hbm.xml" />
+        <property name="hibernate.query.factory_class">org.hibernate.hql.internal.classic.ClassicQueryTranslatorFactory</property>
+        <mapping resource="Message.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>
