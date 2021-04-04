@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
+import org.hibernate.Query;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -16,6 +17,9 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.service.ServiceRegistry;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 
 public class HibernateApplication {
 
@@ -180,6 +184,55 @@ public class HibernateApplication {
 
             // Get error if try to delete not existing (BUT MYSQL WOULD NOT !!)
             // Exception in thread "main" java.lang.IllegalArgumentException: attempt to create delete event with null entity
+            e.printStackTrace();
+
+        }finally {
+            session.close();
+        }
+    }
+
+    // For infomration only
+    public void sampleHQLQuery() {
+
+        Session session = factory.openSession();
+
+        // An example using Criterias to query
+        // CriteriaQuery<Employee> cq = session.getCriteriaBuilder().createQuery(Employee.class);
+        // cq.from(Employee.class);
+        // List<Employee> employees = session.createQuery(cq).getResultList();
+
+        // NOTE: the following changed between release 5 and the previous release of Hibernate
+        // An example using Criterias to query with restrictions to query results
+        // CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        // CriteriaQuery<Employee> criteriaQuery = criteriaBuilder.createQuery(Employee.class);
+        // Root<User> root = criteriaQuery.from(User.class);
+        // criteriaQuery.select(root);
+        // criteriaQuery.where(criteriaBuilder.equal(root.get(property), constraintValue));
+        // Query<SELECTVALUETYPE> query = session.createQuery(criteriaQuery);
+
+        try{
+            // HQL Examples
+            // You can specify the entire query if required but be carefull, normally we assume all the columns are returned
+            // so that is why we assign it to our Employee object but if getting just the name, for example, then you would
+            // have a list of string, not objects
+            Query query = session.createQuery("from Employee as e where e.firstName " +
+                                                 "like 'S%' and salary > 10000");
+
+            // Example query using named parameters
+            // String hql = "from employee where salary > :salary";
+            // query = session.createQuery(hql);
+            // query.setInteger("salary", 90000);
+
+            // You could also use: int val = (int)query.uniqueResult(); when expecting a single value (as int in this case)
+            List employees = query.list();
+
+
+
+            for (Iterator iterator = employees.iterator(); iterator.hasNext();){
+                // Do something
+            }
+
+        }catch (HibernateException e) {
             e.printStackTrace();
 
         }finally {
