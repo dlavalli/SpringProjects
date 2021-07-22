@@ -1,16 +1,17 @@
-package guru.springframework.sfgdi.services;
+package guru.springframework.pets;
 
-import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-//@Primary
-//@Service
+//@Profile({"dog"})
+//@Service("petService")
 // Refactored to use instead guru.springframework.sfgdi.config.GreetingServiceConfig
 // Usually, if you do not own the code (ie using thirdparty), you will usually use java base config
 // (ie: config class) while when you own the code you will use the annotation based
-public class PrimaryGreetingService implements guru.springframework.sfgdi.services.GreetingService  {
+public class DogPetService implements PetService {
     @Override
-    public String sayGreeting() {
-        return "Hello World - from Primary Bean";
+    public String getPetType(){
+        return "Dogs are the best!";
     }
 }
+

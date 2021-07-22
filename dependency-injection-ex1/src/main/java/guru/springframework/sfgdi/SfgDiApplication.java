@@ -1,9 +1,20 @@
 package guru.springframework.sfgdi;
 
 import guru.springframework.sfgdi.controllers.*;
+import guru.springframework.sfgdi.services.PrototypeBean;
+import guru.springframework.sfgdi.services.SingletonBean;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+
+// Refactored to use instead guru.springframework.sfgdi.config.GreetingServiceConfig
+// Usually, if you do not own the code (ie using thirdparty), you will usually use java base config
+// (ie: config class) while when you own the code you will use the annotation based
+
+// Overwritting the spring default of looking only at main package in component scan
+// @ComponentScan(basePackages= {"guru.springframework.sfgdi", "guru.springframework.pets"})
 
 @SpringBootApplication
 public class SfgDiApplication {
@@ -37,6 +48,17 @@ public class SfgDiApplication {
 		System.out.println("----------Constructor");
 		ConstructorInjectedController constructorInjectedController = (ConstructorInjectedController)ctx.getBean("constructorInjectedController");
 		System.out.println(constructorInjectedController	.getGreeting());
+
+		System.out.println("----------bean Scopes");
+		SingletonBean singletonBean1 = ctx.getBean(SingletonBean.class);
+		System.out.println(singletonBean1.getMyScope());
+		SingletonBean singletonBean2 = ctx.getBean(SingletonBean.class);
+		System.out.println(singletonBean2.getMyScope());
+
+		PrototypeBean prototypeBean1 = ctx.getBean(PrototypeBean.class);
+		System.out.println(prototypeBean1.getMyScope());
+		PrototypeBean prototypeBean2 = ctx.getBean(PrototypeBean.class);
+		System.out.println(prototypeBean2.getMyScope());
 	}
 
 }
