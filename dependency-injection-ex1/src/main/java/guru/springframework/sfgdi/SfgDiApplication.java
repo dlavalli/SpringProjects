@@ -1,6 +1,9 @@
 package guru.springframework.sfgdi;
 
+import guru.springframework.sfgdi.config.SfgConfiguration;
+import guru.springframework.sfgdi.config.SfgConstructorConfiguration;
 import guru.springframework.sfgdi.controllers.*;
+import guru.springframework.sfgdi.datasource.FakeDataSource;
 import guru.springframework.sfgdi.services.PrototypeBean;
 import guru.springframework.sfgdi.services.SingletonBean;
 import org.springframework.boot.SpringApplication;
@@ -27,27 +30,27 @@ public class SfgDiApplication {
 		System.out.println(petController.whichPetIsTheBest());
 
 		// This uses a profile configuration to select which bean instance to load
-		I18nController i18nController = (I18nController)ctx.getBean("i18nController");
+		I18nController i18nController = (I18nController) ctx.getBean("i18nController");
 		System.out.println(i18nController.sayHello());
 
 		// By default when Spring creates beans, the string name of the bean
 		// is going to be the class name but beginning with a lower case
-		MyController myController = (MyController)ctx.getBean("myController");
+		MyController myController = (MyController) ctx.getBean("myController");
 
 		System.out.println("----------Primary bean");
 		System.out.println(myController.sayHello());
 
 		System.out.println("----------Property");
-		PropertyInjectedController propertyInjectedController = (PropertyInjectedController	)ctx.getBean("propertyInjectedController");
+		PropertyInjectedController propertyInjectedController = (PropertyInjectedController) ctx.getBean("propertyInjectedController");
 		System.out.println(propertyInjectedController.getGreeting());
 
 		System.out.println("----------Setter");
-		SetterInjectedController setterInjectedController = (SetterInjectedController)ctx.getBean("setterInjectedController");
+		SetterInjectedController setterInjectedController = (SetterInjectedController) ctx.getBean("setterInjectedController");
 		System.out.println(setterInjectedController.getGreeting());
 
 		System.out.println("----------Constructor");
-		ConstructorInjectedController constructorInjectedController = (ConstructorInjectedController)ctx.getBean("constructorInjectedController");
-		System.out.println(constructorInjectedController	.getGreeting());
+		ConstructorInjectedController constructorInjectedController = (ConstructorInjectedController) ctx.getBean("constructorInjectedController");
+		System.out.println(constructorInjectedController.getGreeting());
 
 		System.out.println("----------bean Scopes");
 		SingletonBean singletonBean1 = ctx.getBean(SingletonBean.class);
@@ -59,6 +62,23 @@ public class SfgDiApplication {
 		System.out.println(prototypeBean1.getMyScope());
 		PrototypeBean prototypeBean2 = ctx.getBean(PrototypeBean.class);
 		System.out.println(prototypeBean2.getMyScope());
-	}
 
+		System.out.println("----------Fake data source");
+		FakeDataSource fakeDataSource = ctx.getBean(FakeDataSource.class);
+		System.out.println(fakeDataSource.getUsername());
+		System.out.println(fakeDataSource.getPassword());
+		System.out.println(fakeDataSource.getJdbcurl());
+
+		System.out.println("----------Config props bean");
+		SfgConfiguration sfgConfiguration = ctx.getBean(SfgConfiguration.class);
+		System.out.println(sfgConfiguration.getUsername());
+		System.out.println(sfgConfiguration.getPassword());
+		System.out.println(sfgConfiguration.getJdbcurl());
+
+		System.out.println("----------Constructor Binding");
+		SfgConstructorConfiguration sfgConstructorConfiguration = ctx.getBean(SfgConstructorConfiguration.class);
+		System.out.println(sfgConstructorConfiguration.getUsername());
+		System.out.println(sfgConstructorConfiguration.getPassword());
+		System.out.println(sfgConstructorConfiguration.getJdbcurl());
+	}
 }

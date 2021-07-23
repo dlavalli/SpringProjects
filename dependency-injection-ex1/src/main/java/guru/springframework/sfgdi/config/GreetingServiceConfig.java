@@ -2,16 +2,33 @@ package guru.springframework.sfgdi.config;
 
 import guru.springframework.pets.PetService;
 import guru.springframework.pets.PetServiceFactory;
+import guru.springframework.sfgdi.datasource.FakeDataSource;
 import guru.springframework.sfgdi.repositories.EnglishGreetingRepository;
 import guru.springframework.sfgdi.repositories.EnglishGreetingRepositoryImpl;
 import guru.springframework.sfgdi.services.*;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.Profile;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.*;
 
+// NOT best way of doing import if using application.properties file
+// @PropertySource("classpath:datasource.properties")
+
+@EnableConfigurationProperties(SfgConstructorConfiguration.class)
 @Configuration
 public class GreetingServiceConfig {
+
+    // Usefull but verbose, instead use as below
+    //FakeDataSource fakeDataSource(@Value("${guru.username}") String username,
+    //                              @Value("${guru.password}") String password,
+    //                              @Value("${guru.jdbcurl}")  String jdbcurl) {
+    @Bean
+    FakeDataSource fakeDataSource(SfgConstructorConfiguration                                                                                                             sfgConfiguration) {
+        FakeDataSource fakeDataSource = new FakeDataSource();
+        fakeDataSource.setUsername(sfgConfiguration.getUsername());
+        fakeDataSource.setPassword(sfgConfiguration.getPassword());
+        fakeDataSource.setJdbcurl(sfgConfiguration.getJdbcurl());
+        return fakeDataSource;
+    }
 
     @Bean
     PetServiceFactory petServiceFactory() {
