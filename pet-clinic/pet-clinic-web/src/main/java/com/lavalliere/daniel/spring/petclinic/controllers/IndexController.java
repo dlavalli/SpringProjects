@@ -11,4 +11,9 @@ public class IndexController {
         // Send back to thymeleaf the template filename (ie: index.html)
         return "index";
     }
+    @RequestMapping("/oups")
+    public String oupsHandler() {
+        return "notimplemented";
+    }
+
 }

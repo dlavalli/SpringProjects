@@ -24,4 +24,9 @@ public class OwnerController {
         // Send back to thymeleaf the template filename (ie: index.html)
         return "owners/index";
     }
+
+    @RequestMapping("/find")
+    public String findOwners() {
+        return "notimplemented";
+    }
 }
