@@ -3,6 +3,7 @@ package com.lavalliere.daniel.spring.receipewebapp.domain;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "unit_of_measure")
 public class UnitOfMeasure {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)  // Support autogeneration of id value
