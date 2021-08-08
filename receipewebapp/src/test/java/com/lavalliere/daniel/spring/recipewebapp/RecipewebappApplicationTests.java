@@ -1,10 +1,10 @@
-package com.lavalliere.daniel.spring.receipewebapp;
+package com.lavalliere.daniel.spring.recipewebapp;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ReceipewebappApplicationTests {
+class RecipewebappApplicationTests {
 
 	@Test
 	void contextLoads() {

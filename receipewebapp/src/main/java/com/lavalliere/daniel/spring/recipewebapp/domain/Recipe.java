@@ -1,4 +1,4 @@
-package com.lavalliere.daniel.spring.receipewebapp.domain;
+package com.lavalliere.daniel.spring.recipewebapp.domain;
 
 import javax.persistence.*;
 import java.util.Set;

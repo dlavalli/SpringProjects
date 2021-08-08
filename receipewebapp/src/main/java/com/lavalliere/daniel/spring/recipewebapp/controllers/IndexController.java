@@ -1,4 +1,4 @@
-package com.lavalliere.daniel.spring.receipewebapp.controllers;
+package com.lavalliere.daniel.spring.recipewebapp.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

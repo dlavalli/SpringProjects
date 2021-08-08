@@ -1,4 +1,4 @@
-package com.lavalliere.daniel.spring.receipewebapp.domain;
+package com.lavalliere.daniel.spring.recipewebapp.domain;
 
 import javax.persistence.*;
 
@@ -9,7 +9,7 @@ public class Notes {
     @GeneratedValue(strategy = GenerationType.IDENTITY)  // Support autogeneration of id value
     private long id;
 
-    @OneToOne  // Do not want to delete Receipe if delete notes
+    @OneToOne  // Do not want to delete Recipe if delete notes
     private Recipe recipe;
 
     @Lob   // Allow for entity string member to be > 255 chars as a Binary large object (blob)

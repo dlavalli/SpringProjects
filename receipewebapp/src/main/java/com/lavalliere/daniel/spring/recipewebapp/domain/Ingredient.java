@@ -1,4 +1,4 @@
-package com.lavalliere.daniel.spring.receipewebapp.domain;
+package com.lavalliere.daniel.spring.recipewebapp.domain;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -17,7 +17,7 @@ public class Ingredient {
     private UnitOfMeasure uom;
 
     @ManyToOne  // unidirectional, No cascade, do not want to delete recipe when deleting ingredients
-    private Recipe receipe;
+    private Recipe recipe;
 
     public long getId() {
         return id;
@@ -51,11 +51,11 @@ public class Ingredient {
         this.uom = uom;
     }
 
-    public Recipe getReceipe() {
-        return receipe;
+    public Recipe getRecipe() {
+        return recipe;
     }
 
-    public void setReceipe(Recipe receipe) {
-        this.receipe = receipe;
+    public void setRecipe(Recipe recipe) {
+        this.recipe = recipe;
     }
 }

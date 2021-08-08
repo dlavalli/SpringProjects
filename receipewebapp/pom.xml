@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.lavalliere.daniel.spring.</groupId>
-	<artifactId>receipewebapp</artifactId>
+	<artifactId>recipewebapp</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>receipewebapp</name>
-	<description>Receipe Spring Web App</description>
+	<name>recipewebapp</name>
+	<description>Recipe Spring Web App</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>
