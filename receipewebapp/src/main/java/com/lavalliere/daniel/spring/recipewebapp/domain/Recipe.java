@@ -1,6 +1,7 @@
 package com.lavalliere.daniel.spring.recipewebapp.domain;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -16,14 +17,13 @@ public class Recipe {
     private Integer servings;
     private String source;
     private String url;
-    private String directions;
 
-    // TODO - add
-    // private Difficulty difficulty;
+    @Lob
+    private String directions;
 
     @OneToMany(cascade = CascadeType.ALL,
                mappedBy = "recipe")  // Mapped to a property call recipe in the corresponding relationship end
-    private Set<Ingredient> ingredients;
+    private Set<Ingredient> ingredients = new HashSet<>();
 
     @Lob  // Allow for entity string member to be > 255 chars as a Binary large object (blob)
     private Byte[] image;
@@ -38,7 +38,7 @@ public class Recipe {
     @JoinTable(name = "recipe_category",
                joinColumns = @JoinColumn(name = "recipe_id"),
                inverseJoinColumns = @JoinColumn(name = "category_id"))
-    private Set<Category> categories;
+    private Set<Category> categories = new HashSet<>();
 
     public long getId() {
         return id;
@@ -126,6 +126,13 @@ public class Recipe {
 
     public void setNotes(Notes notes) {
         this.notes = notes;
+        notes.setRecipe(this);
+    }
+
+    public Recipe addIngredient(Ingredient ingredient) {
+        ingredient.setRecipe(this);
+        this.ingredients.add(ingredient);
+        return this;
     }
 
     public Difficulty getDifficulty() {
