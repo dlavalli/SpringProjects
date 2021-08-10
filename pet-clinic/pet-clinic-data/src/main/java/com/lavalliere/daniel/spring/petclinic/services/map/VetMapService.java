@@ -1,10 +1,9 @@
 package com.lavalliere.daniel.spring.petclinic.services.map;
 
 
-import com.lavalliere.daniel.spring.petclinic.model.Pet;
 import com.lavalliere.daniel.spring.petclinic.model.Specialty;
 import com.lavalliere.daniel.spring.petclinic.model.Vet;
-import com.lavalliere.daniel.spring.petclinic.services.CrudService;
+import com.lavalliere.daniel.spring.petclinic.model.Visit;
 import com.lavalliere.daniel.spring.petclinic.services.SpecialtyService;
 import com.lavalliere.daniel.spring.petclinic.services.VetService;
 import org.springframework.stereotype.Service;
@@ -12,11 +11,11 @@ import org.springframework.stereotype.Service;
 import java.util.Set;
 
 @Service
-public class VetServiceMap extends AbstractMapService<Vet, Long> implements VetService {
+public class VetMapService extends AbstractMapService<Vet, Long> implements VetService {
 
     private final SpecialtyService specialtyService;
 
-    public VetServiceMap(SpecialtyService specialtyService) {
+    public VetMapService(SpecialtyService specialtyService) {
         this.specialtyService = specialtyService;
     }
 

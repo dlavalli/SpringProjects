@@ -2,6 +2,7 @@ package com.lavalliere.daniel.spring.petclinic.services.map;
 
 import com.lavalliere.daniel.spring.petclinic.model.Owner;
 import com.lavalliere.daniel.spring.petclinic.model.Pet;
+import com.lavalliere.daniel.spring.petclinic.model.Visit;
 import com.lavalliere.daniel.spring.petclinic.services.OwnerService;
 import com.lavalliere.daniel.spring.petclinic.services.PetService;
 import com.lavalliere.daniel.spring.petclinic.services.PetTypeService;
@@ -10,12 +11,12 @@ import org.springframework.stereotype.Service;
 import java.util.Set;
 
 @Service
-public class OwnerServiceMap extends AbstractMapService<Owner, Long> implements OwnerService {
+public class OwnerMapService extends AbstractMapService<Owner, Long> implements OwnerService {
 
     private final PetTypeService petTypeService;
     private final PetService petService;
 
-    public OwnerServiceMap(PetTypeService petTypeService, PetService petService) {
+    public OwnerMapService(PetTypeService petTypeService, PetService petService) {
         this.petTypeService = petTypeService;
         this.petService = petService;
     }
@@ -43,7 +44,7 @@ public class OwnerServiceMap extends AbstractMapService<Owner, Long> implements 
                         throw new RuntimeException("Pet type is required!");
                     }
 
-                    if (pet.getId() != null) {
+                    if (pet.getId() == null) {
                         Pet savedPet = petService.save(pet);
                         pet.setId(savedPet.getId());
                     }

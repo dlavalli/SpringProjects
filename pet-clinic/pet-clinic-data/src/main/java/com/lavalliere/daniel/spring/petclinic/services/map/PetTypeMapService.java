@@ -1,6 +1,7 @@
 package com.lavalliere.daniel.spring.petclinic.services.map;
 
 import com.lavalliere.daniel.spring.petclinic.model.PetType;
+import com.lavalliere.daniel.spring.petclinic.model.Visit;
 import com.lavalliere.daniel.spring.petclinic.services.PetTypeService;
 import org.springframework.stereotype.Service;
 
