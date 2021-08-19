@@ -10,6 +10,6 @@ import javax.persistence.*;
 public class UnitOfMeasure {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)  // Support autogeneration of id value
-    private long id;
+    private Long id;
     private String description;
 }

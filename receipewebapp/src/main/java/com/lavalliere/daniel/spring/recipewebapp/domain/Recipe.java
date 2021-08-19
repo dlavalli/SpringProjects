@@ -12,7 +12,7 @@ public class Recipe {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)  // Support autogeneration of id value
-    private long id;
+    private Long id;
     
     private String description;
     private Integer prepTime;

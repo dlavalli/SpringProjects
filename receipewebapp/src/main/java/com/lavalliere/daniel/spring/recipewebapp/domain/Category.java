@@ -14,7 +14,7 @@ public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)  // Support autogeneration of id value
-    private long id;
+    private Long id;
 
     private String description;
 

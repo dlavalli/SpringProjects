@@ -12,7 +12,7 @@ public class Notes {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)  // Support autogeneration of id value
-    private long id;
+    private Long id;
 
     @OneToOne (fetch = FetchType.EAGER) // Do not want to delete Recipe if delete notes
     private Recipe recipe;
