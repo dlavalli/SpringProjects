@@ -9,8 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 
-@Getter
 @Setter
+@Getter
 @MappedSuperclass   // Tell JPA other class will inherit this, we do not need this mapped to a specific database
 public class BaseEntity implements Serializable {
 

@@ -7,9 +7,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith(SpringExtension.class)  // This is actually an Intergration tst and it loads the spring context
 @SpringBootTest
 class PetClinicApplicationTest {
+
+
 
 	@BeforeEach
 	public void setup() {
