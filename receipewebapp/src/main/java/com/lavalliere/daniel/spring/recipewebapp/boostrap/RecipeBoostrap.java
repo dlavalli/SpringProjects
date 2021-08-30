@@ -40,31 +40,37 @@ public class RecipeBoostrap implements ApplicationListener<ContextRefreshedEvent
 
         //get UOMs
         Optional<UnitOfMeasure> eachUomOptional = unitOfMeasureRepository.findByDescription("Each");
+
         if(!eachUomOptional.isPresent()){
             throw new RuntimeException("Expected UOM Not Found");
         }
 
         Optional<UnitOfMeasure> tableSpoonUomOptional = unitOfMeasureRepository.findByDescription("Tablespoon");
+
         if(!tableSpoonUomOptional.isPresent()){
             throw new RuntimeException("Expected UOM Not Found");
         }
 
         Optional<UnitOfMeasure> teaSpoonUomOptional = unitOfMeasureRepository.findByDescription("Teaspoon");
+
         if(!teaSpoonUomOptional.isPresent()){
             throw new RuntimeException("Expected UOM Not Found");
         }
 
         Optional<UnitOfMeasure> dashUomOptional = unitOfMeasureRepository.findByDescription("Dash");
+
         if(!dashUomOptional.isPresent()){
             throw new RuntimeException("Expected UOM Not Found");
         }
 
         Optional<UnitOfMeasure> pintUomOptional = unitOfMeasureRepository.findByDescription("Pint");
+
         if(!pintUomOptional.isPresent()){
             throw new RuntimeException("Expected UOM Not Found");
         }
 
         Optional<UnitOfMeasure> cupsUomOptional = unitOfMeasureRepository.findByDescription("Cup");
+
         if(!cupsUomOptional.isPresent()){
             throw new RuntimeException("Expected UOM Not Found");
         }
@@ -79,11 +85,13 @@ public class RecipeBoostrap implements ApplicationListener<ContextRefreshedEvent
 
         //get Categories
         Optional<Category> americanCategoryOptional = categoryRepository.findByDescription("American");
+
         if(!americanCategoryOptional.isPresent()){
             throw new RuntimeException("Expected Category Not Found");
         }
 
         Optional<Category> mexicanCategoryOptional = categoryRepository.findByDescription("Mexican");
+
         if(!mexicanCategoryOptional.isPresent()){
             throw new RuntimeException("Expected Category Not Found");
         }
@@ -133,6 +141,10 @@ public class RecipeBoostrap implements ApplicationListener<ContextRefreshedEvent
 
         guacRecipe.getCategories().add(americanCategory);
         guacRecipe.getCategories().add(mexicanCategory);
+
+        guacRecipe.setUrl("http://www.simplyrecipes.com/recipes/perfect_guacamole/");
+        guacRecipe.setServings(4);
+        guacRecipe.setSource("Simply Recipes");
 
         //add to return list
         recipes.add(guacRecipe);
@@ -191,6 +203,10 @@ public class RecipeBoostrap implements ApplicationListener<ContextRefreshedEvent
 
         tacosRecipe.getCategories().add(americanCategory);
         tacosRecipe.getCategories().add(mexicanCategory);
+
+        tacosRecipe.setUrl("http://www.simplyrecipes.com/recipes/spicy_grilled_chicken_tacos/");
+        tacosRecipe.setServings(4);
+        tacosRecipe.setSource("Simply Recipes");
 
         recipes.add(tacosRecipe);
         return recipes;

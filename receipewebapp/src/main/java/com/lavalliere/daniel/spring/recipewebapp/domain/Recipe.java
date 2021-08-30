@@ -32,11 +32,11 @@ public class Recipe {
     @Lob  // Allow for entity string member to be > 255 chars as a Binary large object (blob)
     private Byte[] image;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Notes notes;
-
     @Enumerated(value = EnumType.STRING)
     private Difficulty difficulty;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Notes notes;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "recipe_category",
@@ -46,7 +46,7 @@ public class Recipe {
 
     public void setNotes(Notes notes) {
         this.notes = notes;
-        notes.setRecipe(this);
+        if (notes != null) notes.setRecipe(this);
     }
 
     public Recipe addIngredient(Ingredient ingredient) {
