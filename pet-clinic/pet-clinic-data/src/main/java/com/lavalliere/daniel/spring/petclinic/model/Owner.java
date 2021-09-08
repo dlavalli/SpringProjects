@@ -10,7 +10,6 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor  // Mostly for builder pattern
 @AllArgsConstructor // Mostly for builder pattern
-@Builder
 @Entity
 @Table(name = "owners")
 public class Owner extends Person {
