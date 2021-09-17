@@ -4,6 +4,7 @@ import com.lavalliere.daniel.spring.recipewebapp.commands.RecipeCommand;
 import com.lavalliere.daniel.spring.recipewebapp.converters.RecipeCommandToRecipe;
 import com.lavalliere.daniel.spring.recipewebapp.converters.RecipeToRecipeCommand;
 import com.lavalliere.daniel.spring.recipewebapp.domain.Recipe;
+import com.lavalliere.daniel.spring.recipewebapp.exceptions.NotFoundException;
 import com.lavalliere.daniel.spring.recipewebapp.repositories.RecipeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -42,7 +43,8 @@ public class RecipeServiceImpl implements RecipeService {
     public Recipe findById(Long id) {
         Optional<Recipe> recipeOptional = recipeRepository.findById(id);
         if (!recipeOptional.isPresent()) {
-            throw new RuntimeException("Recipe not found");
+            // throw new RuntimeException("Recipe not found");
+            throw new NotFoundException("Recipe Not Found. For ID value: " + id.toString() );
         }
         return recipeOptional.get();
     }
