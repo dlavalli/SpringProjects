@@ -3,9 +3,9 @@ package com.lavalliere.daniel.spring.recipewebapp.controllers;
 import com.lavalliere.daniel.spring.recipewebapp.commands.RecipeCommand;
 import com.lavalliere.daniel.spring.recipewebapp.services.ImageService;
 import com.lavalliere.daniel.spring.recipewebapp.services.RecipeService;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.junit.Before;
 import org.mockito.MockitoAnnotations;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockMultipartFile;
@@ -35,7 +35,10 @@ public class ImageControllerTest {
         MockitoAnnotations.initMocks(this);
 
         controller = new ImageController(imageService, recipeService);
-        mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+        mockMvc = MockMvcBuilders
+                .standaloneSetup(controller)
+                .setControllerAdvice(new ControllerExceptionHandler())
+                .build();
     }
 
     @Test
@@ -96,5 +99,13 @@ public class ImageControllerTest {
         byte[] reponseBytes = response.getContentAsByteArray();
 
         assertEquals(s.getBytes().length, reponseBytes.length);
+    }
+
+    @Test
+    public void testGetImageNumberFormatException() throws Exception {
+
+        mockMvc.perform(get("/recipe/asdf/recipeimage"))
+                .andExpect(status().isBadRequest())
+                .andExpect(view().name("400error"));
     }
 }
