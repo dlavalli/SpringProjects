@@ -3,20 +3,22 @@ package com.lavalliere.daniel.spring.recipewebapp.controllers;
 import com.lavalliere.daniel.spring.recipewebapp.commands.RecipeCommand;
 import com.lavalliere.daniel.spring.recipewebapp.services.ImageService;
 import com.lavalliere.daniel.spring.recipewebapp.services.RecipeService;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+import static org.mockito.ArgumentMatchers.anyLong;
 
 public class ImageControllerTest {
 
@@ -31,12 +33,11 @@ public class ImageControllerTest {
     MockMvc mockMvc;
 
     @Before
-    public void setUp() throws Exception {
+    public void setup() throws Exception {
         MockitoAnnotations.initMocks(this);
 
         controller = new ImageController(imageService, recipeService);
-        mockMvc = MockMvcBuilders
-                .standaloneSetup(controller)
+        mockMvc = MockMvcBuilders.standaloneSetup(controller)
                 .setControllerAdvice(new ControllerExceptionHandler())
                 .build();
     }
@@ -70,6 +71,7 @@ public class ImageControllerTest {
 
         verify(imageService, times(1)).saveImageFile(anyLong(), any());
     }
+
 
     @Test
     public void renderImageFromDB() throws Exception {
