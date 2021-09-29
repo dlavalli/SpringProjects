@@ -7,57 +7,62 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.validation.Valid;
 
 @Slf4j
 @Controller
 public class RecipeController {
-    public final RecipeService recipeService;
+
+    private static final String RECIPE_RECIPEFORM_URL = "recipe/recipeform";
+    private final RecipeService recipeService;
 
     public RecipeController(RecipeService recipeService) {
         this.recipeService = recipeService;
     }
 
     @GetMapping("/recipe/{id}/show")
-    // @RequestMapping("/recipe/{id}/show")
-    public String showById(@PathVariable String id, Model model) {
-        model.addAttribute("recipe", recipeService.findById(Long.valueOf(id)));
+    public String showById(@PathVariable String id, Model model){
+
+        model.addAttribute("recipe", recipeService.findById(new Long(id)));
 
         return "recipe/show";
     }
 
     @GetMapping("recipe/new")
-    // @RequestMapping("recipe/new")
-    public String newRecipe(Model model) {
+    public String newRecipe(Model model){
         model.addAttribute("recipe", new RecipeCommand());
+
         return "recipe/recipeform";
     }
 
     @GetMapping("recipe/{id}/update")
-    // @RequestMapping("recipe/{id}/update")
     public String updateRecipe(@PathVariable String id, Model model){
         model.addAttribute("recipe", recipeService.findCommandById(Long.valueOf(id)));
-        return  "recipe/recipeform";
+        return RECIPE_RECIPEFORM_URL;
     }
 
     @PostMapping("recipe")
-    // @RequestMapping("recipe")
-    public String saveOrUpdate(@ModelAttribute RecipeCommand command) {
+    public String saveOrUpdate(@Valid @ModelAttribute("recipe") RecipeCommand command, BindingResult bindingResult){
+
+        if(bindingResult.hasErrors()){
+
+            bindingResult.getAllErrors().forEach(objectError -> {
+                log.debug(objectError.toString());
+            });
+
+            return RECIPE_RECIPEFORM_URL;
+        }
+
         RecipeCommand savedCommand = recipeService.saveRecipeCommand(command);
 
-        // So we're going to return back that and what we want to do here, we're going to
-        // use a redirect and this is a command that tells Spring MVC to redirect to a
-        // specific URL. We're going to append that with the ID of the saved object. So the
-        // functionality is we'll see the form, it'll come up we'll enter in all the properties
-        // that we want and then when we post it with the save, they'll go
-        // into this. It will save to the database and then come back and we will redirect
-        // to the recipe show and show the saved recipe
         return "redirect:/recipe/" + savedCommand.getId() + "/show";
     }
 
     @GetMapping("recipe/{id}/delete")
-    // @RequestMapping("recipe/{id}/delete")
     public String deleteById(@PathVariable String id){
 
         log.debug("Deleting id: " + id);
@@ -72,23 +77,10 @@ public class RecipeController {
 
         log.error("Handling not found exception");
         log.error(exception.getMessage());
+
         ModelAndView modelAndView = new ModelAndView();
 
         modelAndView.setViewName("404error");
-        modelAndView.addObject("exception", exception);
-        return modelAndView;
-    }
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(NumberFormatException.class)
-    public ModelAndView handleNumberFormat(Exception exception){
-
-        log.error("Handling Number Format Exception");
-        log.error(exception.getMessage());
-
-        ModelAndView modelAndView = new ModelAndView();
-
-        modelAndView.setViewName("400error");
         modelAndView.addObject("exception", exception);
 
         return modelAndView;
