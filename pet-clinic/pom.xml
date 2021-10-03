@@ -20,6 +20,9 @@
 	<description>Pet Clinic</description>
 	<properties>
 		<java.version>11</java.version>
+		<jaxb.version>2.3.1</jaxb.version>
+		<maven.compiler.source>${java.version}</maven.compiler.source>
+		<maven.compiler.target>${java.version}</maven.compiler.target>
 	</properties>
 
 	<build>
