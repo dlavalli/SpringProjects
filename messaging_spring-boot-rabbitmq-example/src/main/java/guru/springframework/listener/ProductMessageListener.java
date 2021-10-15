@@ -2,6 +2,7 @@ package guru.springframework.listener;
 
 import guru.springframework.domain.Product;
 import guru.springframework.repositories.ProductRepository;
+import org.springframework.amqp.core.Message;
 import org.springframework.stereotype.Component;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -36,5 +37,8 @@ public class ProductMessageListener {
 
         productRepository.save(product);
         log.info("Message processed...");
+    }
+
+    public void receiveMessage(Message message) {
     }
 }

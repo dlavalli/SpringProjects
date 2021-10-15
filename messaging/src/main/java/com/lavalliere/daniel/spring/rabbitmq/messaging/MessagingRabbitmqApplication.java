@@ -35,6 +35,19 @@ public class MessagingRabbitmqApplication {
 			./mvnw clean package
 		and then run the JAR file, as follows:
 			java -jar target/gs-messaging-rabbitmq-0.1.0.jar
+
+
+		NOTE:	Since by default @SpringBootAppication also maps @Configuration all the necessary beans are created and managed
+			  	BUT  in a real application, this would be managed in another file using @Configuration annotation
+			  	ex:
+			  		@Configuration
+ 					public class MyAutoConfiguration {
+						@ConditionalOnMissingBean
+     					@Bean
+     					public MyService myService() {
+         				...
+     					}
+					}
 	 */
 
 	static final String topicExchangeName = "spring-boot-exchange";
