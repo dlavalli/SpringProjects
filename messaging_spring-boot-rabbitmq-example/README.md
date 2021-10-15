@@ -10,7 +10,9 @@ Things to be checked before starting the application:
 * If you wish to used a different database / schema, you will need to override values in application.properties
 * Ensure that you have a rabbitmq server running and correctly configured in application.properties (default is localhost:5671) )
  
-* Once the application is started, a browser at http://localhost:8080
+
+
+* Once the application is started, a browser at http://localhost:8080/product/list
 * Create a new Product record
 * Notice that the value for "Is Message Sent" in the http://localhost:8080/product/show/1 is currently set to false.
 * There is a link at the bottom of this record "Send messages through queue listener"
