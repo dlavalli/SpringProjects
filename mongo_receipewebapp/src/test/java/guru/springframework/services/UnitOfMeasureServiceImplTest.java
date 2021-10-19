@@ -30,6 +30,7 @@ public class UnitOfMeasureServiceImplTest {
         service = new UnitOfMeasureServiceImpl(unitOfMeasureRepository, unitOfMeasureToUnitOfMeasureCommand);
     }
 
+    /*
     @Test
     public void listAllUoms() throws Exception {
         //given
@@ -51,5 +52,5 @@ public class UnitOfMeasureServiceImplTest {
         assertEquals(2, commands.size());
         verify(unitOfMeasureRepository, times(1)).findAll();
     }
-
+    */
 }
