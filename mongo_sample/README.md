@@ -1,0 +1,1 @@
+Spring Boot MongoDB sample Ref: https://spring.io/guides/gs/accessing-data-mongodb/
