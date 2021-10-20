@@ -12,5 +12,5 @@ import java.util.Optional;
 // public interface UnitOfMeasureRepository extends CrudRepository<UnitOfMeasure, String> {
 public interface UnitOfMeasureRepository extends MongoRepository<UnitOfMeasure, String> {
 
-    Optional<UnitOfMeasure> findByDescription(String description);
+    Optional<UnitOfMeasure> findFirstByDescription(String description);
 }
