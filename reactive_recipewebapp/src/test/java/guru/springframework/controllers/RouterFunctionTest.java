@@ -44,7 +44,7 @@ public class RouterFunctionTest {
 
         webTestClient.get().uri("/api/recipes")
                 .accept(MediaType.APPLICATION_JSON)
-                .exchange()
+                .exchange()    // Invoke the web service
                 .expectStatus().isOk();
     }
 
@@ -55,7 +55,7 @@ public class RouterFunctionTest {
 
         webTestClient.get().uri("/api/recipes")
                 .accept(MediaType.APPLICATION_JSON)
-                .exchange()
+                .exchange()   // Invoke the web service
                 .expectStatus().isOk()
                 .expectBodyList(Recipe.class);
     }
