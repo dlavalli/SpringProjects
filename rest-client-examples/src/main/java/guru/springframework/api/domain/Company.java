@@ -11,11 +11,10 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class Name implements Serializable {
-    private String title;
-    private String first;
-    private String last;
+public class Company implements Serializable {
+    private String name;
+    private String catchPhrase;
+    private String bs;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-    private final static long serialVersionUID = 420620315591775395L;
-
+    private final static long serialVersionUID = -6060389543186972962L;
 }

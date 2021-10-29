@@ -11,11 +11,12 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class Location implements Serializable {
+public class Address implements Serializable {
     private String street;
+    private String suite;
     private String city;
-    private String state;
-    private String postcode;
+    private String zipcode;
+    private Geo geo;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-    private final static long serialVersionUID = -3532048267747973846L;
+    private final static long serialVersionUID = -3456220023350258369L;
 }

@@ -12,16 +12,14 @@ import java.util.Map;
 @AllArgsConstructor
 @EqualsAndHashCode
 public class User implements Serializable {
-    private String gender;
-    private Name name;
-    private Location location;
+    private Integer id;
+    private String name;
+    private String username;
     private String email;
-    private Login login;
+    private Address address;
     private String phone;
-    private Job job;
-    private Billing billing;
-    private String language;
-    private String currency;
+    private String website;
+    private Company company;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-    private final static long serialVersionUID = 270727596527329664L;
+    private final static long serialVersionUID = -5154164239330697744L;
 }
