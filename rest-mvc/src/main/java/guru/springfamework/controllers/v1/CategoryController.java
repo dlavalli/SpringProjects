@@ -9,6 +9,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 // @Controller
+/*
+  With @RestController
+  We're no longer returning back that Response Entity. So now we have a RestController which is just a recap
+  a convenience method, to say that we're returning back a ResponseBody from these. So the @ResponseBody annotation
+  says I'm gonna return back an object but I want you to parse it to the proper implementation where the clients asking
+  for JSON or XML or whatever, the Framework is gonna handle that based on the request type and handling that object.
+ */
+
 @RestController
 @RequestMapping(CategoryController.BASE_URL)
 public class CategoryController {
