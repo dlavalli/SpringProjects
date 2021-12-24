@@ -25,7 +25,7 @@
 		</dependency>
 
 
-		<!-- Embedded JMS Spring server dependencies -->
+		<!-- Embedded JMS Spring server dependencies, for testing only -->
 		<dependency>
 			<groupId>org.apache.activemq</groupId>
 			<artifactId>artemis-server</artifactId>

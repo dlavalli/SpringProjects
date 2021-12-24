@@ -13,6 +13,10 @@ public class SfgJmsApplication {
 
 		// Setup an embeded (for testing) server application
 		// This will raise some exception but they can be ignored here for testing
+
+		// NOTE: this configuration actually isn't necessary because if you do have
+		// the server on your class path, Spring Boot is going to automatically
+		// bring up a configuration for us
 		ActiveMQServer server = ActiveMQServers.newActiveMQServer(
 				new ConfigurationImpl()
 						.setPersistenceEnabled(false)
