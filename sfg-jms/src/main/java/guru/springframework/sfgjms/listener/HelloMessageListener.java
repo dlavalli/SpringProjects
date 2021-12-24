@@ -13,6 +13,16 @@ import org.springframework.stereotype.Component;
 import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.Message;
+
+// NOTE:
+// when you are developing with Spring Framework, I tend to favor using this implementation.
+// You can favor. You can also use JMS. What this is going to allow you to do is when
+// you get further into the Spring Framework and building a larger application. This is
+// abstracting the JMS portion of the code. So, if you decide to switch to a different
+// messaging provider, it'll be a little less painful. So, it's kind of abstracting that out.
+
+// import org.springframework.messaging.Message;
+
 import java.util.UUID;
 
 @RequiredArgsConstructor
