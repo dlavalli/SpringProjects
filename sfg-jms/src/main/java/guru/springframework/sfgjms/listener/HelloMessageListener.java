@@ -70,6 +70,11 @@ public class HelloMessageListener {
                 .message("World")
                 .build();
 
+
+        // Using the Spring Framework message implementation (abstraction)
+        // jmsTemplate.convertAndSend((Destination)message.getHeaders().get("jms_replyTo"), "Got it");
+
+        // Using the JMX message implementation
         jmsTemplate.convertAndSend(message.getJMSReplyTo(), replyMessage);
     }
 }
