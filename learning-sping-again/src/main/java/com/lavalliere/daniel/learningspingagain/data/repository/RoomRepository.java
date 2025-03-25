@@ -1,9 +1,0 @@
-package com.lavalliere.daniel.learningspingagain.data.repository;
-
-import com.lavalliere.daniel.learningspingagain.data.entity.Room;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
-
-@Repository
-public interface RoomRepository extends CrudRepository<Room, Long> {
-}
