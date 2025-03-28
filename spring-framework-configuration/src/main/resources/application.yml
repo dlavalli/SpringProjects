@@ -1,0 +1,7 @@
+app:
+  name: "Frank"
+  greeting: "Hello"
+spring:
+  profiles:
+    active: "prod"
+
