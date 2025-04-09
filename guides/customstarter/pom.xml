@@ -7,14 +7,16 @@
         <groupId>com.lavalliere.daniel.spring</groupId>
         <artifactId>guides</artifactId>
         <version>0.0.1-SNAPSHOT</version>
+        <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
     <artifactId>customstarter</artifactId>
 
     <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>${guides.java.version}</java.version>
+        <maven.compiler.source>${guides.java.version}</maven.compiler.source>
+        <maven.compiler.target>${guides.java.version}</maven.compiler.target>
+        <project.build.sourceEncoding>${sourceEncoding}</project.build.sourceEncoding>
     </properties>
 
 </project>
