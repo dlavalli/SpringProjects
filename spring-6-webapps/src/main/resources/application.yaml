@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: spring-6-webapps
+server:
+  port: 8080
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+server:
+  port: 8081
+---
+spring:
+  config:
+    activate:
+      on-profile: test
+server:
+  port: 8082

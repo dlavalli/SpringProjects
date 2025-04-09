@@ -2,12 +2,16 @@ package guru.springframework.spring_6_di.controllers;
 
 import guru.springframework.spring_6_di.services.GreetingService;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 
 @Controller
 public class MyController {
 
     private GreetingService greetingService;
+
+    @Value("${basic.property.value: 'unknown'}")
+    private String propertyValue;
 
     // Preferred method: Using contructor injection
     public MyController(
@@ -17,7 +21,7 @@ public class MyController {
     }
 
     public String sayHello(){
-        System.out.println("I'm in the controller");
+        System.out.println("I'm in the controller with property: "+ propertyValue);
 
         return greetingService.sayGreetings();
     }

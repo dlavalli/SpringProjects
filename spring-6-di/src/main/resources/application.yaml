@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: spring-6-di
+
+basic:
+  property:
+    value: "Basic Property Value"
