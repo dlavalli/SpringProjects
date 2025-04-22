@@ -1,16 +1,16 @@
 package com.lavalliere.daniel.spring.spring6restmvc.services;
 
-import com.lavalliere.daniel.spring.spring6restmvc.model.Customer;
+import com.lavalliere.daniel.spring.spring6restmvc.model.CustomerDTO;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 public interface CustomerService {
-    List<Customer> listCustomers();
-    Optional<Customer> getCustomerById(UUID id);
-    Customer saveNewCustomer(Customer customer);
-    void updateCustomerById(UUID customerId, Customer customer);
-    void deleteCustomerById(UUID customerId);
-    void patchCustomerById(UUID customerId, Customer customer);
+    List<CustomerDTO> listCustomers();
+    Optional<CustomerDTO> getCustomerById(UUID id);
+    CustomerDTO saveNewCustomer(CustomerDTO customer);
+    Optional<CustomerDTO> updateCustomerById(UUID customerId, CustomerDTO customer);
+    Boolean deleteCustomerById(UUID customerId);
+    void patchCustomerById(UUID customerId, CustomerDTO customer);
 }

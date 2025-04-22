@@ -1,7 +1,7 @@
 package com.lavalliere.daniel.spring.spring6restmvc.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lavalliere.daniel.spring.spring6restmvc.model.Customer;
+import com.lavalliere.daniel.spring.spring6restmvc.model.CustomerDTO;
 import com.lavalliere.daniel.spring.spring6restmvc.services.CustomerService;
 import com.lavalliere.daniel.spring.spring6restmvc.services.CustomerServiceImpl;
 import org.assertj.core.api.AssertionsForClassTypes;
@@ -52,7 +52,7 @@ class CustomerControllerTest {
     ArgumentCaptor<UUID> uuidArgumentCaptor;
 
     @Captor
-    ArgumentCaptor<Customer> customerArgumentCaptor;
+    ArgumentCaptor<CustomerDTO> customerArgumentCaptor;
 
 
     @BeforeEach()
@@ -62,7 +62,7 @@ class CustomerControllerTest {
 
     @Test
     void testPatchCustomer() throws Exception {
-        Customer customer = customerServiceImpl.listCustomers().get(0);
+        CustomerDTO customer = customerServiceImpl.listCustomers().get(0);
 
         // Reflects the field(s) that would be supplied by the api endpoint caller
         Map<String, Object> customerMap = new HashMap<>();
@@ -84,7 +84,9 @@ class CustomerControllerTest {
 
     @Test
     void testDeleteCustomer() throws Exception {
-        Customer customer = customerServiceImpl.listCustomers().get(0);
+        CustomerDTO customer = customerServiceImpl.listCustomers().get(0);
+
+        given(customerService.deleteCustomerById(any())).willReturn(true);
 
         mockMvc.perform(delete(CustomerController.CUSTOMER_PATH_ID,customer.getId())
                 .accept(MediaType.APPLICATION_JSON))
@@ -99,7 +101,9 @@ class CustomerControllerTest {
 
     @Test
     void testUpdateCustomer() throws Exception {
-        Customer customer = customerServiceImpl.listCustomers().get(0);
+        CustomerDTO customer = customerServiceImpl.listCustomers().get(0);
+
+        given(customerService.updateCustomerById(any(), any())).willReturn(Optional.of(customer));
 
         mockMvc.perform(put(CustomerController.CUSTOMER_PATH_ID,customer.getId())
             .accept(MediaType.APPLICATION_JSON)
@@ -108,16 +112,16 @@ class CustomerControllerTest {
             .andExpect(status().isNoContent());
 
         // By default, it verifies for a single interaction
-        verify(customerService).updateCustomerById(any(UUID.class), any(Customer.class));
+        verify(customerService).updateCustomerById(any(UUID.class), any(CustomerDTO.class));
     }
 
     @Test
     void testCreateNewCustomer() throws Exception {
-        Customer customer = customerServiceImpl.listCustomers().get(0);
+        CustomerDTO customer = customerServiceImpl.listCustomers().get(0);
         customer.setVersion(null);
         customer.setId(null);
 
-        given(customerService.saveNewCustomer(any(Customer.class)))
+        given(customerService.saveNewCustomer(any(CustomerDTO.class)))
             .willReturn(customerServiceImpl.listCustomers().get(1));
 
         mockMvc.perform(post(CustomerController.CUSTOMER_PATH)
@@ -130,7 +134,7 @@ class CustomerControllerTest {
 
     @Test
     void getCustomerById() throws Exception {
-        Customer testCustomer = customerServiceImpl.listCustomers().get(0);
+        CustomerDTO testCustomer = customerServiceImpl.listCustomers().get(0);
 
         given(customerService.getCustomerById(testCustomer.getId())).willReturn(Optional.of(testCustomer));
 
