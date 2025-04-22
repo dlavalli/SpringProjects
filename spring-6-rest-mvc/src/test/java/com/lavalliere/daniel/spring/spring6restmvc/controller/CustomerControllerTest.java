@@ -69,7 +69,7 @@ class CustomerControllerTest {
 
         // Can replace patch(CustomerController.CUSTOMER_PATH+"/"+customer.getId()  by the version below
         // since the patch method has a version that takes the host/path with a variable arguments
-        mockMvc.perform(patch(CustomerController.CUSTOMER_PATH_ID,customer.getId())
+        mockMvc.perform(patch(CustomerController.CUSTOMER_PATH_ID,customer.getId() )
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(customerMap))
