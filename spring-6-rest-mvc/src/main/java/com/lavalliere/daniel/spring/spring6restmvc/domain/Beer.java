@@ -2,8 +2,10 @@ package com.lavalliere.daniel.spring.spring6restmvc.domain;
 
 import com.lavalliere.daniel.spring.spring6restmvc.model.BeerStyle;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.math.BigDecimal;
@@ -19,25 +21,38 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Beer {
 
-    @Id
-    @Column(length=36, columnDefinition = "varchar", updatable = false, nullable = false)  // Hints to sql creation
     // @GeneratedValue(strategy = GenerationType.IDENTITY) // For long id type
-    @GeneratedValue(generator = "UUID")
-
     // OLD Deprecated ways of doing auto ID generation with new Hibernate version:
     // @GenericGenerator(name="UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    // New implementation
+    @Id
+    @Column(length=36, columnDefinition = "varchar", updatable = false, nullable = false)  // Hints to sql creation
+    @GeneratedValue(generator = "UUID")
     @UuidGenerator
     private UUID id;
 
     @Version
     private Integer version;  // Mostly to protect against concurrent modifications
 
+    @NotNull
+    @NotBlank
+    @Size(max=50) // Jakarta constraints
+    @Column(length = 50)  // Hibernate constraint
     private String beerName;
+
+    @NotNull
     private BeerStyle beerStyle;
+
+    @NotNull
+    @NotBlank
+    @Size(max=255) // Jakarta constraints
+    @Column(length = 255)  // Hibernate constraint
     private String upc;
+
     private Integer quantityOnHand;
+
+    @NotNull
     private BigDecimal price;
+
     private LocalDateTime createdDate;
     private LocalDateTime updateDate;
 }

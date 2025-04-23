@@ -14,8 +14,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
-import javax.swing.text.html.Option;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -63,6 +63,40 @@ class BeerControllerTest {
     }
 
     @Test
+    void testFailingUpdateOnRequiredFields() throws Exception {
+        BeerDTO beer = beerServiceImpl.listBeers().getFirst();
+        beer.setBeerName("");
+
+        MvcResult result = mockMvc.perform(put(BeerController.BEER_PATH_ID, beer.getId())
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(beer))
+            ).andExpect(status().isBadRequest())
+             .andExpect(jsonPath("$.length()", is(1)))
+            .andReturn()
+            ;
+
+        System.out.println(result.getResponse().getContentAsString());
+    }
+
+    @Test
+    void testCreateNullBeerName() throws Exception {
+        BeerDTO dto = BeerDTO.builder().build();
+
+        given(beerService.saveNewBeer(any(BeerDTO.class))).willReturn(beerServiceImpl.listBeers().get(1));
+
+        MvcResult result = mockMvc.perform(post(BeerController.BEER_PATH)
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(dto))
+        ).andExpect(status().isBadRequest())
+         .andExpect(jsonPath("$.length()", is(6)))  // Due to CustomErrorController
+         .andReturn();
+
+        System.out.println(result.getResponse().getContentAsString());
+    }
+
+    @Test
     void testPatchBeer() throws Exception {
         BeerDTO beer = beerServiceImpl.listBeers().get(0);
 
@@ -70,18 +104,18 @@ class BeerControllerTest {
         Map<String, Object> beerMap = new HashMap<>();
         beerMap.put("beerName", "New Name");
 
+
         // Can replace patch(BeerController.BEER_PATH+"/"+beer.getId()  by the version below
         // since the patch method has a version that takes the host/path with a variable arguments
         mockMvc.perform(patch(BeerController.BEER_PATH_ID,beer.getId())
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(beerMap))
-            )
-            .andExpect(status().isNoContent());
+            ).andExpect(status().isNoContent());
 
-        verify(beerService).patchBeerById(uuidArgumentCaptor.capture(), beerArgumentCaptor.capture());
-        assertThat(beer.getId()).isEqualTo(uuidArgumentCaptor.getValue());
-        assertThat(beerMap.get("beerName")).isEqualTo(beerArgumentCaptor.getValue().getBeerName());
+         verify(beerService).patchBeerById(uuidArgumentCaptor.capture(), beerArgumentCaptor.capture());
+         assertThat(beer.getId()).isEqualTo(uuidArgumentCaptor.getValue());
+         assertThat(beerMap.get("beerName")).isEqualTo(beerArgumentCaptor.getValue().getBeerName());
     }
 
     @Test

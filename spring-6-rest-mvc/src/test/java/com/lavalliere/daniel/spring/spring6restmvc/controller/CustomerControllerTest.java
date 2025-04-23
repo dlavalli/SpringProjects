@@ -14,6 +14,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -59,6 +60,24 @@ class CustomerControllerTest {
     public void setup() {
         customerServiceImpl = new CustomerServiceImpl();
     }
+
+    @Test
+    void testCreateNullCustomerName() throws Exception {
+        CustomerDTO dto = CustomerDTO.builder().build();
+
+        given(customerService.saveNewCustomer(any(CustomerDTO.class))).willReturn(customerServiceImpl.listCustomers().get(1));
+
+        MvcResult result = mockMvc.perform(post(CustomerController.CUSTOMER_PATH)
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(dto))
+        ).andExpect(status().isBadRequest())
+         .andExpect(jsonPath("$.length()", is(2)))  // Due to CustomErrorController
+         .andReturn();
+
+        // System.out.println(result.getResponse().getContentAsString());
+    }
+
 
     @Test
     void testPatchCustomer() throws Exception {

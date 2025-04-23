@@ -1,24 +1,35 @@
 package com.lavalliere.daniel.spring.spring6restmvc.controller;
 
-import com.lavalliere.daniel.spring.spring6restmvc.domain.Beer;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lavalliere.daniel.spring.spring6restmvc.domain.Customer;
 import com.lavalliere.daniel.spring.spring6restmvc.mappers.CustomerMapper;
-import com.lavalliere.daniel.spring.spring6restmvc.model.BeerDTO;
 import com.lavalliere.daniel.spring.spring6restmvc.model.CustomerDTO;
 import com.lavalliere.daniel.spring.spring6restmvc.repositories.CustomerRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.WebApplicationContext;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.hamcrest.core.Is.is;
 
 @SpringBootTest  // Load full context not a test splice
 class CustomerControllerIT {
@@ -30,6 +41,40 @@ class CustomerControllerIT {
 
     @Autowired
     CustomerMapper customerMapper;
+
+    @Autowired
+    ObjectMapper objectMapper;
+
+    @Autowired
+    WebApplicationContext wac;
+
+    MockMvc mockMvc;
+
+    @BeforeEach
+    public void setup() {
+        mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+    }
+
+
+    @Test
+    void testPatchCustomerBadname() throws Exception {
+        Customer customer = customerRepository.findAll().getFirst();
+
+        // Reflects the field(s) that would be supplied by the api endpoint caller
+        Map<String, Object> customerMap = new HashMap<>();
+        customerMap.put("name", "New Name 012345678900123456789001234567890012345678900123456789001234567890");
+
+        // Can replace patch(CustomerController.CUSTOMER_PATH+"/"+customer.getId()  by the version below
+        // since the patch method has a version that takes the host/path with a variable arguments
+        MvcResult result = mockMvc.perform(patch(CustomerController.CUSTOMER_PATH_ID,customer.getId() )
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(customerMap))
+            )
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.length()", is(1)))
+            .andReturn();
+    }
 
     @Test
     void testDeleteByIdNotFound() {
