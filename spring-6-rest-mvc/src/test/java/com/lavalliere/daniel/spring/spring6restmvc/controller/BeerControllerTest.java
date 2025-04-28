@@ -64,7 +64,7 @@ class BeerControllerTest {
 
     @Test
     void testFailingUpdateOnRequiredFields() throws Exception {
-        BeerDTO beer = beerServiceImpl.listBeers().getFirst();
+        BeerDTO beer = beerServiceImpl.listBeers(null, null, false).getFirst();
         beer.setBeerName("");
 
         MvcResult result = mockMvc.perform(put(BeerController.BEER_PATH_ID, beer.getId())
@@ -83,7 +83,7 @@ class BeerControllerTest {
     void testCreateNullBeerName() throws Exception {
         BeerDTO dto = BeerDTO.builder().build();
 
-        given(beerService.saveNewBeer(any(BeerDTO.class))).willReturn(beerServiceImpl.listBeers().get(1));
+        given(beerService.saveNewBeer(any(BeerDTO.class))).willReturn(beerServiceImpl.listBeers(null, null, false).get(1));
 
         MvcResult result = mockMvc.perform(post(BeerController.BEER_PATH)
             .accept(MediaType.APPLICATION_JSON)
@@ -98,7 +98,7 @@ class BeerControllerTest {
 
     @Test
     void testPatchBeer() throws Exception {
-        BeerDTO beer = beerServiceImpl.listBeers().get(0);
+        BeerDTO beer = beerServiceImpl.listBeers(null, null, false).get(0);
 
         // Reflects the field(s) that would be supplied by the api endpoint caller
         Map<String, Object> beerMap = new HashMap<>();
@@ -120,7 +120,7 @@ class BeerControllerTest {
 
     @Test
     void testDeleteBeer() throws Exception {
-        BeerDTO beer = beerServiceImpl.listBeers().get(0);
+        BeerDTO beer = beerServiceImpl.listBeers(null, null, false).get(0);
 
         given(beerService.deleteBeerById(any())).willReturn(true);
 
@@ -137,7 +137,7 @@ class BeerControllerTest {
 
     @Test
     void testUpdateBeer() throws Exception {
-        BeerDTO beer = beerServiceImpl.listBeers().get(0);
+        BeerDTO beer = beerServiceImpl.listBeers(null, null, false).get(0);
 
         given(beerService.updateBeerById(any(), any())).willReturn(Optional.of(beer));
 
@@ -165,12 +165,12 @@ class BeerControllerTest {
         //      instead of creating one on our own. The configured mapper has the following LocaldateTime format
         //      "createdDate":"2025-04-21T14:29:59.1762712"
 
-        BeerDTO beer = beerServiceImpl.listBeers().get(0);
+        BeerDTO beer = beerServiceImpl.listBeers(null, null, false).get(0);
         beer.setVersion(null);
         beer.setId(null);
 
         given(beerService.saveNewBeer(any(BeerDTO.class)))
-            .willReturn(beerServiceImpl.listBeers().get(1));
+            .willReturn(beerServiceImpl.listBeers(null, null, false).get(1));
 
         mockMvc.perform(post(BeerController.BEER_PATH)
             .accept(MediaType.APPLICATION_JSON)
@@ -182,7 +182,7 @@ class BeerControllerTest {
 
     @Test
     public void listBeers() throws Exception {
-        given(beerService.listBeers()).willReturn(beerServiceImpl.listBeers());
+        given(beerService.listBeers(any(), any(), any())).willReturn(beerServiceImpl.listBeers(null, null, false));
 
         mockMvc.perform(
             get(BeerController.BEER_PATH)
@@ -203,7 +203,7 @@ class BeerControllerTest {
 
     @Test
     public void getBeerById() throws Exception {
-        BeerDTO testBeer = beerServiceImpl.listBeers().get(0);
+        BeerDTO testBeer = beerServiceImpl.listBeers(null, null, false).get(0);
 
         given(beerService.getBeerById(testBeer.getId())).willReturn(Optional.of(testBeer));
 
