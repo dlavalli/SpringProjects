@@ -20,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @Import({BootstrapData.class, BeerCsvServiceImpl.class})  // THIS IS IMPORTANT ELSE BOOTSTRAP DATA NOT LOADED !!!
+                                                          // Also this class will not be autowired
 class BeerRepositoryTest {
     @Autowired
     BeerRepository beerRepository;
