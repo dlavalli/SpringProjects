@@ -14,10 +14,16 @@ public class RestTemplateBuilderConfig {
     @Value("${rest.template.rootUrl}")
     String rootUrl;
 
+    @Value("${rest.template.username}")
+    String username;
+
+    @Value("${rest.template.password}")
+    String password;
+
     // To simplify the configuration of RestTemplateBuilder, use RestTemplateBuilderConfigurer
     @Bean
     RestTemplateBuilder restTemplateBuilder(RestTemplateBuilderConfigurer configurer){
-
+        /*
         // Create the builder and configure a new instance
         // Configurer takes the new instance and configures it with the spring boot defaults
         RestTemplateBuilder builder = configurer.configure(new RestTemplateBuilder());
@@ -26,9 +32,20 @@ public class RestTemplateBuilderConfig {
         DefaultUriBuilderFactory uriBuilderFactory = new
             DefaultUriBuilderFactory(rootUrl);
 
+        // One way to address server using Basic authentication is as follow
+        // then: return builderWithAuth.uriTemplateHandler(uriBuilderFactory);
+        RestTemplateBuilder builderWithAuth = builder.basicAuthentication("user", "password");
+
+
         // uriTemplateHandler returns a new instance of the resttemplate
         // so if you just call uriTemplateHandler and return the builder
         // it wont be configured so need to setup this way
-        return builder.uriTemplateHandler(uriBuilderFactory);
+        return builderWithAuth.uriTemplateHandler(uriBuilderFactory);
+        */
+
+        // Optimized using builder pattern
+        return configurer.configure(new RestTemplateBuilder())
+            .basicAuthentication(username, password)
+            .uriTemplateHandler(new DefaultUriBuilderFactory(rootUrl));
     }
 }
