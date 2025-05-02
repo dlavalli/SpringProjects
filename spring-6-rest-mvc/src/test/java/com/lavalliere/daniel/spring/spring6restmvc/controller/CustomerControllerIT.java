@@ -1,6 +1,7 @@
 package com.lavalliere.daniel.spring.spring6restmvc.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lavalliere.daniel.spring.spring6restmvc.config.SpringSecConfig;
 import com.lavalliere.daniel.spring.spring6restmvc.domain.Customer;
 import com.lavalliere.daniel.spring.spring6restmvc.mappers.CustomerMapper;
 import com.lavalliere.daniel.spring.spring6restmvc.model.CustomerDTO;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +28,8 @@ import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -52,7 +56,7 @@ class CustomerControllerIT {
 
     @BeforeEach
     public void setup() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+        mockMvc = MockMvcBuilders.webAppContextSetup(wac).apply(springSecurity()).build();
     }
 
 
@@ -67,6 +71,7 @@ class CustomerControllerIT {
         // Can replace patch(CustomerController.CUSTOMER_PATH+"/"+customer.getId()  by the version below
         // since the patch method has a version that takes the host/path with a variable arguments
         MvcResult result = mockMvc.perform(patch(CustomerController.CUSTOMER_PATH_ID,customer.getId() )
+                .with(httpBasic("user", "password"))
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(customerMap))
