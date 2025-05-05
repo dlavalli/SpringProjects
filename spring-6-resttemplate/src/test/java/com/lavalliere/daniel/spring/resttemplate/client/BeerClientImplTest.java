@@ -12,6 +12,9 @@ import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+// THIS TEST REQUIRES A CURRENTLY RUNNING INSTANCE of
+// https://github.com/dlavalli/SpringProjects/tree/master/spring-6-rest-mvc   (OAuth2ResourceServer branch)
+
 @SpringBootTest
 class BeerClientImplTest {
 
