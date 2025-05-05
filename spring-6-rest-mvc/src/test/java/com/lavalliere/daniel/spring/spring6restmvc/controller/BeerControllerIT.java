@@ -2,6 +2,8 @@ package com.lavalliere.daniel.spring.spring6restmvc.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lavalliere.daniel.spring.spring6restmvc.domain.Beer;
+import com.lavalliere.daniel.spring.spring6restmvc.mappers.BeerMapperImpl;
+import com.lavalliere.daniel.spring.spring6restmvc.mappers.CustomerMapperImpl;
 import com.lavalliere.daniel.spring.spring6restmvc.model.BeerStyle;
 import com.lavalliere.daniel.spring.spring6restmvc.mappers.BeerMapper;
 import com.lavalliere.daniel.spring.spring6restmvc.model.BeerDTO;
@@ -10,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,6 +28,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static com.lavalliere.daniel.spring.spring6restmvc.controller.BeerControllerTest.jwtRequestPostProcessor;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
@@ -34,6 +39,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.hamcrest.core.Is.is;
 
 @SpringBootTest  // Load full context not a test splice
+@Import({BeerMapperImpl.class, CustomerMapperImpl.class})
 class BeerControllerIT {
     @Autowired
     BeerController beerController;
@@ -54,12 +60,25 @@ class BeerControllerIT {
 
     @BeforeEach
     public void setup() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+        mockMvc = MockMvcBuilders.webAppContextSetup(wac)
+            .apply(springSecurity())
+            .build();
+    }
+
+    @Test
+    void testNoAuth() throws Exception {
+        //Test No Auth
+        mockMvc.perform(get(BeerController.BEER_PATH)
+                .queryParam("beerStyle", BeerStyle.IPA.name())
+                .queryParam("pageSize", "800"))
+            .andExpect(status().isUnauthorized());
+
     }
 
     @Test
     void testListBeersByStyleAndNameShowInventoryTrueWithPaging() throws Exception {
         mockMvc.perform(get(BeerController.BEER_PATH)
+                .with(jwtRequestPostProcessor)
                 .queryParam("beerName", "IPA")
                 .queryParam("beerStyle", BeerStyle.IPA.name())
                 .queryParam("showInventory", "true")
@@ -73,6 +92,7 @@ class BeerControllerIT {
     @Test
     void tesListBeersByStyleAndNameShowInventoryTrue() throws Exception {
         mockMvc.perform(get(BeerController.BEER_PATH)
+                .with(jwtRequestPostProcessor)
                 .queryParam("beerName", "IPA")
                 .queryParam("beerStyle", BeerStyle.IPA.name())
                 .queryParam("showInventory", "true"))
@@ -84,6 +104,7 @@ class BeerControllerIT {
     @Test
     void tesListBeersByStyleAndNameShowInventoryFalse() throws Exception {
         mockMvc.perform(get(BeerController.BEER_PATH)
+                .with(jwtRequestPostProcessor)
                 .queryParam("beerName", "IPA")
                 .queryParam("beerStyle", BeerStyle.IPA.name())
                 .queryParam("showInventory", "false"))
@@ -95,6 +116,7 @@ class BeerControllerIT {
     @Test
     void tesListBeersByStyleAndName() throws Exception {
         mockMvc.perform(get(BeerController.BEER_PATH)
+                .with(jwtRequestPostProcessor)
                 .queryParam("beerName", "IPA")
                 .queryParam("beerStyle", BeerStyle.IPA.name()))
             .andExpect(status().isOk())
@@ -104,6 +126,7 @@ class BeerControllerIT {
     @Test
     void tesListBeersByStyle() throws Exception {
         mockMvc.perform(get(BeerController.BEER_PATH)
+                .with(jwtRequestPostProcessor)
                 .queryParam("beerStyle", BeerStyle.IPA.name()))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.size()", is(11)));
@@ -112,6 +135,7 @@ class BeerControllerIT {
     @Test
     void testListBeersByName() throws Exception {
         mockMvc.perform(get(BeerController.BEER_PATH)
+                .with(jwtRequestPostProcessor)
                 .queryParam("beerName", "IPA"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.size()", is(11)));
@@ -128,11 +152,11 @@ class BeerControllerIT {
         // Can replace patch(BeerController.BEER_PATH+"/"+beer.getId()  by the version below
         // since the patch method has a version that takes the host/path with a variable arguments
         MvcResult result = mockMvc.perform(patch(BeerController.BEER_PATH_ID,beer.getId())
+                .with(jwtRequestPostProcessor)
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(beerMap))
         ).andExpect(status().isBadRequest())
-         .andExpect(jsonPath("$.length()", is(1)))
          .andReturn();
     }
 

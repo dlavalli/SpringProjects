@@ -5,6 +5,8 @@ import com.lavalliere.daniel.spring.spring6restmvc.domain.Beer;
 import com.lavalliere.daniel.spring.spring6restmvc.domain.BeerOrder;
 import com.lavalliere.daniel.spring.spring6restmvc.domain.BeerOrderShipment;
 import com.lavalliere.daniel.spring.spring6restmvc.domain.Customer;
+import com.lavalliere.daniel.spring.spring6restmvc.mappers.BeerMapperImpl;
+import com.lavalliere.daniel.spring.spring6restmvc.mappers.CustomerMapperImpl;
 import com.lavalliere.daniel.spring.spring6restmvc.services.BeerCsvServiceImpl;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -19,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest  // Need complete application context so test splice won't do (will fail on autowired)
+@Import({BeerMapperImpl.class, CustomerMapperImpl.class})
 class BeerOrderRepositoryTest {
 
     @Autowired

@@ -1,5 +1,6 @@
 package com.lavalliere.daniel.spring.spring6restmvc.controller;
 
+import static com.lavalliere.daniel.spring.spring6restmvc.controller.BeerControllerTest.jwtRequestPostProcessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lavalliere.daniel.spring.spring6restmvc.model.CustomerDTO;
 import com.lavalliere.daniel.spring.spring6restmvc.services.CustomerService;
@@ -68,6 +69,7 @@ class CustomerControllerTest {
         given(customerService.saveNewCustomer(any(CustomerDTO.class))).willReturn(customerServiceImpl.listCustomers().get(1));
 
         MvcResult result = mockMvc.perform(post(CustomerController.CUSTOMER_PATH)
+                .with(jwtRequestPostProcessor)
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(dto))
@@ -90,6 +92,7 @@ class CustomerControllerTest {
         // Can replace patch(CustomerController.CUSTOMER_PATH+"/"+customer.getId()  by the version below
         // since the patch method has a version that takes the host/path with a variable arguments
         mockMvc.perform(patch(CustomerController.CUSTOMER_PATH_ID,customer.getId() )
+                .with(jwtRequestPostProcessor)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(customerMap))
@@ -108,6 +111,7 @@ class CustomerControllerTest {
         given(customerService.deleteCustomerById(any())).willReturn(true);
 
         mockMvc.perform(delete(CustomerController.CUSTOMER_PATH_ID,customer.getId())
+                .with(jwtRequestPostProcessor)
                 .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
@@ -125,6 +129,7 @@ class CustomerControllerTest {
         given(customerService.updateCustomerById(any(), any())).willReturn(Optional.of(customer));
 
         mockMvc.perform(put(CustomerController.CUSTOMER_PATH_ID,customer.getId())
+                .with(jwtRequestPostProcessor)
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(customer)))
@@ -144,6 +149,7 @@ class CustomerControllerTest {
             .willReturn(customerServiceImpl.listCustomers().get(1));
 
         mockMvc.perform(post(CustomerController.CUSTOMER_PATH)
+                .with(jwtRequestPostProcessor)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(customer))
@@ -159,6 +165,7 @@ class CustomerControllerTest {
 
         mockMvc.perform(
                 get(CustomerController.CUSTOMER_PATH_ID,testCustomer.getId())
+                    .with(jwtRequestPostProcessor)
                     .accept(MediaType.APPLICATION_JSON)
             ).andExpect(status().isOk())
             .andExpectAll(content().contentType(MediaType.APPLICATION_JSON))
@@ -172,6 +179,7 @@ class CustomerControllerTest {
 
         mockMvc.perform(
                 get(CustomerController.CUSTOMER_PATH)
+                    .with(jwtRequestPostProcessor)
                     .accept(MediaType.APPLICATION_JSON)
             ).andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
