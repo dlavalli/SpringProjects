@@ -15,7 +15,7 @@ public class SpringSecConfig {
 
         // Deprecated, replaced with https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/config/annotation/web/builders/HttpSecurity.html#authorizeHttpRequests(org.springframework.security.config.Customizer)
         http.authorizeHttpRequests()
-            .requestMatchers("/api-docs**","/swagger-ui/**").permitAll()
+            // .requestMatchers("/api-docs**","/swagger-ui/**").permitAll()   // CANNOT USE IF DEFINED override in application.properties
             .anyRequest().authenticated()
             .and().httpBasic(Customizer.withDefaults())
             .csrf(httpSecurityCsrfConfigurer -> {
