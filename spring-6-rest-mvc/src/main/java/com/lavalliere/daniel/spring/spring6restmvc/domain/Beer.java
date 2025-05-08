@@ -61,6 +61,9 @@ public class Beer {
     @NotNull
     private BigDecimal price;
 
+    @OneToMany(mappedBy = "beer")
+    private Set<BeerOrderLine> beerOrderLines = new HashSet<>();
+
     @CreationTimestamp
     private LocalDateTime createdDate;
 

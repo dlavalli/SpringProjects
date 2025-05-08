@@ -1,16 +1,20 @@
 package com.lavalliere.daniel.spring.spring6restmvc.services;
 
 import com.lavalliere.daniel.spring.spring6restmvc.domain.Beer;
+import com.lavalliere.daniel.spring.spring6restmvc.events.BeerCreatedEvent;
 import com.lavalliere.daniel.spring.spring6restmvc.mappers.BeerMapper;
 import com.lavalliere.daniel.spring.spring6restmvc.model.BeerDTO;
 import com.lavalliere.daniel.spring.spring6restmvc.model.BeerStyle;
 import com.lavalliere.daniel.spring.spring6restmvc.repositories.BeerRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -25,6 +29,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class BeerServiceJPA implements BeerService {
 
+    private final ApplicationEventPublisher applicationEventPublisher;
     private final BeerRepository beerRepository;
     private final BeerMapper beerMapper;
     private static final int DEFAULT_PAGE = 0;
@@ -118,9 +123,12 @@ public class BeerServiceJPA implements BeerService {
 
     @Override
     public BeerDTO saveNewBeer(BeerDTO beer) {
-        return beerMapper.beerToBeerDto(
-            beerRepository.save(beerMapper.beerDtoToBeer(beer))
-        );
+        Beer savedBeer = beerRepository.save(beerMapper.beerDtoToBeer(beer));
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        applicationEventPublisher.publishEvent(new BeerCreatedEvent(savedBeer, auth));
+
+        return beerMapper.beerToBeerDto(savedBeer);
     }
 
     @Override
