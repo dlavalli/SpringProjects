@@ -1,6 +1,10 @@
 package com.lavalliere.daniel.spring.webmvc.model;
 
+import jakarta.validation.constraints.NotEmpty;
+
 public class Registration {
+
+    @NotEmpty
     private String name;
 
     public String getName() {

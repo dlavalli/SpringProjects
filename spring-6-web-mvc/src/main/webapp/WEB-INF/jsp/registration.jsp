@@ -5,10 +5,12 @@
 <html>
 <head>
     <title>Registration</title>
+    <link rel="stylesheet" href="css/registration.css" type="text/css" />
 </head>
     <body>
         <h1>Registration</h1>
         <form:form modelAttribute="registration" method="POST">
+            <form:errors path="*" cssClass="errorblock" element="div" />
             <table>
                 <tr>
                     <td>
@@ -17,10 +19,13 @@
                     <td>
                         <form:input path="name" />
                     </td>
+                    <td>
+                        <form:errors path="name" cssClass="error" />
+                    </td>
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <input type="submit" value="Add Registration">
+                        <input type="submit" value="<spring:message code='save.changes' />"}>
                     </td>
                 </tr>
             </table>
