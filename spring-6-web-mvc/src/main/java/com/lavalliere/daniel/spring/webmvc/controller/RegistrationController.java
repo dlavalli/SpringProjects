@@ -7,14 +7,14 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 public class RegistrationController {
 
-    @PostMapping("/registration")
+    @PostMapping("registration")
     public String addRegistration(@ModelAttribute("registration") Registration registration) {
-        // System.out.println("Registration: " + registration.getName());
-        return "registration";
+        System.out.println("Registration: " + registration.getName());
+        return "redirect:registration";
     }
 
-    @GetMapping("/registration")
-    public String registration(@ModelAttribute("registration") Registration registration) {
+    @GetMapping("registration")
+    public String getRegistration(@ModelAttribute("registration") Registration registration) {
         return "registration";
     }
 }
