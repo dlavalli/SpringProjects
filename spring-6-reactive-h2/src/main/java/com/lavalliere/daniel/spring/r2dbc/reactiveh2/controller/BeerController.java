@@ -36,7 +36,7 @@ public class BeerController {
     @PutMapping(BEER_PATH_ID)
     Mono<ResponseEntity<Void>> updateExistingBeer(
         @PathVariable("beerId") Integer beerId,
-        @RequestBody BeerDTO beerDTO
+        @Validated @RequestBody BeerDTO beerDTO
     ){
         return beerService.updateBeer(beerId, beerDTO)
             .map(savedDto -> ResponseEntity.ok().build());
@@ -52,7 +52,7 @@ public class BeerController {
         return beerService.listBeers();
     }
     @PostMapping(BEER_PATH)
-    Mono<ResponseEntity<Void>> createNewBeer(@RequestBody BeerDTO beerDTO){
+    Mono<ResponseEntity<Void>> createNewBeer(@Validated @RequestBody BeerDTO beerDTO){
         return beerService.saveNewBeer(beerDTO)
             .map(savedDto ->
                 ResponseEntity.created(
