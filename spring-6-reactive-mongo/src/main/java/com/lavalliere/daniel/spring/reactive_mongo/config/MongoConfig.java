@@ -11,7 +11,8 @@ import org.springframework.data.mongodb.config.AbstractReactiveMongoConfiguratio
 
 import static java.util.Collections.singletonList;
 
-@Configuration
+// Moved to application.properties so no longer required
+// @Configuration
 public class MongoConfig extends AbstractReactiveMongoConfiguration {
 
     @Bean
