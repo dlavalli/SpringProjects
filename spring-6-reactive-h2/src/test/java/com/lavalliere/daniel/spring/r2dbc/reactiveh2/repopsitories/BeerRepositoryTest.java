@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @DataR2dbcTest
 // Required since we are running a test slice for BeerRepository and other classes will not be loaded
 @Import({DatabaseConfig.class})
-class BeerRepositoryTest {
+public class BeerRepositoryTest {
 
     @Autowired
     BeerRepository beerRepository;
@@ -38,7 +38,7 @@ class BeerRepositoryTest {
         beerRepository.save(getTestBeer()).subscribe(System.out::println);
     }
 
-    private Beer getTestBeer() {
+    public static Beer getTestBeer() {
         return Beer.builder()
             .beerName("Space Dust")
             .beerStyle("IPA")
