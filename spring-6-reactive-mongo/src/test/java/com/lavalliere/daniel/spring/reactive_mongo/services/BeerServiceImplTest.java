@@ -29,7 +29,7 @@ import static org.awaitility.Awaitility.await;
 @Testcontainers
 @SpringBootTest
 @Import({BeerMapperImpl.class, CustomerMapperImpl.class})
-class BeerServiceImplTest {
+public class BeerServiceImplTest {
 
     @Container
     @ServiceConnection
