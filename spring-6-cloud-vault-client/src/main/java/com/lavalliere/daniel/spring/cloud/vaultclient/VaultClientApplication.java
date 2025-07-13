@@ -1,4 +1,4 @@
-package com.lavalliere.daniel.spring.vaultclient;
+package com.lavalliere.daniel.spring.cloud.vaultclient;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
