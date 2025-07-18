@@ -36,6 +36,15 @@
 			<artifactId>spring-cloud-starter-vault-config</artifactId>
 		</dependency>
 
+		<!--
+			Required for  Spring Cloud 2020.0.0 + due to known issue not loading bootstrap
+			https://github.com/spring-cloud/spring-cloud-release/wiki/Spring-Cloud-2020.0-Release-Notes/7e5f2918ee8863fb1a010cdfdc66386d8c2b2e8f#known-issues
+		-->
+	    <dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-bootstrap</artifactId>
+	    </dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>

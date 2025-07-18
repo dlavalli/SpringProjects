@@ -10,6 +10,7 @@ import org.springframework.vault.core.VaultTemplate;
 import org.springframework.vault.core.VaultTransitOperations;
 import org.springframework.vault.support.VaultMount;
 import org.springframework.vault.support.VaultResponse;
+import org.springframework.vault.support.VaultUnsealStatus;
 
 @SpringBootApplication
 public class VaultClientApplication implements CommandLineRunner {
@@ -20,6 +21,9 @@ public class VaultClientApplication implements CommandLineRunner {
 	/*
 		Documentation:
 		https://developer.hashicorp.com/vault/docs/concepts
+
+        Example
+        https://spring.io/guides/gs/accessing-vault
 
 	    Hashicorp server setup (locally installed). Manually starting
         1- vault server --dev --dev-root-token-id="00000000-0000-0000-0000-000000000000"
@@ -47,6 +51,17 @@ public class VaultClientApplication implements CommandLineRunner {
 		// You usually would not print a secret to stdout
 		// https://docs.spring.io/spring-vault/reference/api/java/org/springframework/vault/core/VaultTemplate.html
 		// Returns the operations interface to interact with the Vault Key/Value backend.
+
+		/*
+          Entering the following
+              vault kv put -output-curl-string secret/github life=42
+          Generate the following for info on the body to send and headers
+              curl -X PUT -H "X-Vault-Request: true" -H "X-Vault-Token: $(vault print token)"
+                   -d '{"data":{"life":"42"},"options":{}}' http://127.0.0.1:8200/v1/secret/data/github
+         */
+
+		VaultUnsealStatus status = vaultTemplate.opsForSys().getUnsealStatus();
+
 		VaultResponse response = vaultTemplate
 			.opsForKeyValue("secret", KeyValueBackend.KV_2)  // Versioned api
 			.get("github");
