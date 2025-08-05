@@ -1,7 +1,29 @@
 spring:
   application:
-    name: vault-client
+    name: cloud-vault-client
+#  config:
+#    import: vault://
   cloud:
     vault:
-      token:
-      scheme: http
+#      enabled: true
+#      application-name: cloud-vault-client
+#      kv:
+#        backend: kv
+#        application-name: cloud-vault-client
+#      host: 127.0.0.1
+#      port: 8200
+#      scheme: http
+      uri: http://127.0.0.1:8200/
+#      connection-timeout: 5000
+#      read-timeout: 15000
+##      config:
+##        order: -10
+##      token:
+##      scheme: http
+      authentication: APPROLE
+      app-role:
+        role-id: MY_ROLE-ID
+        secret-id: MY_SECRET-ID
+        role: spring-cloud-vault-client
+        app-role-path: approle
+

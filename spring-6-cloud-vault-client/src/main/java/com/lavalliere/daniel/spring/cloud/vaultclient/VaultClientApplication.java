@@ -1,6 +1,7 @@
 package com.lavalliere.daniel.spring.cloud.vaultclient;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,14 +12,25 @@ import org.springframework.vault.core.VaultTransitOperations;
 import org.springframework.vault.support.VaultMount;
 import org.springframework.vault.support.VaultResponse;
 import org.springframework.vault.support.VaultUnsealStatus;
+import org.springframework.cloud.vault.config.VaultProperties;
 
 @SpringBootApplication
 public class VaultClientApplication implements CommandLineRunner {
 
+	/*
+	  For KV V1 at:   secret/cloud-vault-client
+	  keys are:  fav  and  github.bogus.key
+	 */
+	@Value("${fav}")
+	private String fav;
+	@Value("${github.bogus.key}")
+	private String githubBogusKey;
+
+
+
 	@Autowired
 	private VaultTemplate vaultTemplate;
-
-	/*
+/*
 		Documentation:
 		https://developer.hashicorp.com/vault/docs/concepts
 
@@ -60,11 +72,18 @@ public class VaultClientApplication implements CommandLineRunner {
                    -d '{"data":{"life":"42"},"options":{}}' http://127.0.0.1:8200/v1/secret/data/github
          */
 
+
+		// Determine if the status is current unsealed
 		VaultUnsealStatus status = vaultTemplate.opsForSys().getUnsealStatus();
 
+		// This version works as long as you provide a token
 		VaultResponse response = vaultTemplate
-			.opsForKeyValue("secret", KeyValueBackend.KV_2)  // Versioned api
-			.get("github");
+			.opsForKeyValue("secret", KeyValueBackend.KV_1)  // Versioned api
+			.get("cloud-vault-client");
+			//.opsForKeyValue("kv", KeyValueBackend.KV_2)  // Versioned api
+			//.get("cloud-vault-client");
+			//.opsForKeyValue("secret", KeyValueBackend.KV_2)  // Versioned api
+			//.get("github");
 
 
 		//========================================================================
@@ -72,11 +91,13 @@ public class VaultClientApplication implements CommandLineRunner {
 		//========================================================================
 		System.out.println("Value of github.oauth2.key");
 		System.out.println("-------------------------------");
-		System.out.println(response.getData().get("github.oauth2.key"));
+		//System.out.println(response.getData().get("github.oauth2.key"));
+		System.out.println(response.getData().get("github.bogus.key"));
 		System.out.println("-------------------------------");
 		System.out.println();
 
 
+/*
 		//========================================================================
 		// Let's encrypt some data using the Transit backend.
 		//========================================================================
@@ -92,7 +113,6 @@ public class VaultClientApplication implements CommandLineRunner {
 			transitOperations.createKey("foo-key");
 		}
 
-
 		//========================================================================
 		// Lets Encrypt a plain-text value
 		//========================================================================
@@ -104,7 +124,6 @@ public class VaultClientApplication implements CommandLineRunner {
 		System.out.println("-------------------------------");
 		System.out.println();
 
-
 		//========================================================================
 		// Lets Decrypt it
 		//========================================================================
@@ -114,7 +133,6 @@ public class VaultClientApplication implements CommandLineRunner {
 		System.out.println(plaintext);
 		System.out.println("-------------------------------");
 		System.out.println();
-
 
 		/*
 			Value of github.oauth2.key
