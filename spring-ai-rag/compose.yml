@@ -1,0 +1,36 @@
+########################################
+# Start with :  docker compose up -d
+# Stop  with :  docker compose down
+########################################
+
+services:
+  perplexity-mcp:
+    image: mekayelanik/perplexity-mcp:stable
+    container_name: perplexity-mcp
+    restart: unless-stopped
+    ports:
+      - "8050:8050"
+    environment:
+      - PERPLEXITY_API_KEY=pplx-your-api-key
+      - PERPLEXITY_DEFAULT_MODEL=llama-3.1-sonar-small-128k-online
+      - PORT=8050
+    depends_on:
+      - ollama
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  ollama_data:

@@ -1,0 +1,51 @@
+spring:
+  application:
+    name: spring-ai-rag
+  ai:
+    openai:
+      # In http: would set the token as an http header :  Authorization : Bearer your_token_here
+      # api-key: ${OPENAI_API_KEY}
+      # See https://docs.spring.io/spring-ai/reference/api/chat/perplexity-chat.html
+      api-key: ${PERPLEXITY_API_KEY}
+      base-url: https://api.perplexity.ai
+#      model:
+#        # chat: openai  # By Default
+#        chat: none
+      chat:
+#        completions-path: /chat/completions
+#        completions-path: /embeddings
+#        options:
+#          model: sonar-pro
+#          temperature: 0.2
+#          model: pplx-embed-v1-4b
+#          completions-path: /embeddings
+          # model: "pplx-embed-v1-0.6b pplx-embed-v1-4b"
+
+          ## Chat Endpoint
+          # model: llama-3.1-sonar-small-128k-online
+          # completions-path: /chat/completions
+
+          ## Embeddings Endpoint
+          # model: pplx-embed-v1-0.6b
+          # completions-path: /embeddings
+
+      # Not supported with Perplexity API (used in RAG examples)
+      embedding:
+        enabled: false
+#    qdrant:
+#      host: localhost
+#      port: 6333
+    # Enable a separate local embedding bean ()
+    # No API keys needed for local Ollama
+#    ollama:
+#      base-url: http://localhost:11434
+
+sfg:
+  aiapp:
+    vectorStorePath: D:\\db\\vectorstoredb\\vectorstore.json
+    documentsToLoad:
+      - classpath:/movies500.csv
+
+logging:
+  level:
+    root: INFO
