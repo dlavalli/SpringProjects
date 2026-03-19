@@ -11,7 +11,7 @@ spring:
 #      model:
 #        # chat: openai  # By Default
 #        chat: none
-      chat:
+#      chat:
 #        completions-path: /chat/completions
 #        completions-path: /embeddings
 #        options:
@@ -26,12 +26,11 @@ spring:
           # completions-path: /chat/completions
 
           ## Embeddings Endpoint
-          # model: pplx-embed-v1-0.6b
-          # completions-path: /embeddings
+#          model: pplx-embed-v1-4b
+#          completions-path: /embeddings
 
-      # Not supported with Perplexity API (used in RAG examples)
-      embedding:
-        enabled: false
+#      embedding:
+#        enabled: true
 #    qdrant:
 #      host: localhost
 #      port: 6333
@@ -48,4 +47,4 @@ sfg:
 
 logging:
   level:
-    root: INFO
+    root: DEBUG

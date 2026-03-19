@@ -41,6 +41,17 @@ public class VectorStoreConfig {
             .build();
     }
 
+    /**
+     * Typical response for a single line
+     * {"data":[{"embedding":"9usAB....==","index":0,"object":"embedding"}],"model":"pplx-embed-v1-0.6b","object":"list","usage":{"cost":{"currency":"USD","input_cost":0.000002092,"total_cost":0.000002092},"prompt_tokens":523,"total_tokens":523}}
+     * For 2 lines back to back:
+     * {"error":{"message":"model must be one of: pplx-embed-v1-0.6b pplx-embed-v1-4b","type":"invalid_request","code":400}}
+     *
+     * @param embeddingModel
+     * @param vectorStoreProperties
+     * @return
+     */
+
     @Bean
     public SimpleVectorStore simpleVectorStore(EmbeddingModel embeddingModel, VectorStoreProperties vectorStoreProperties) {
         log.info("Default embedding model is: {}", embeddingModel.toString());
