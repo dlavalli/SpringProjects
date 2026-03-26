@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: spring-6-rest-mvc
+#  profiles:
+#    active: default,springHttpLog
+  flyway:
+    enabled: falsehttp://localhost:8080/swagger-ui/index.html
+  cache:
+    cache-names: beerCache,beerListCache
+
+  # DO NOT USE synchronized blocks with java 21 virtual threads (need Java 24+)
+  threads:
+    virtual:
+      enabled: true
+
+# http://localhost:8080/api-docs
+# http://localhost:8080/api-docs.yaml
+#
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui-custom.html
+    operationsSorter: method
+
+logging:
+  level:
+    com.lavalliere.daniel.spring.spring6restmvc: debug
+    org.zalando.logbook: trace
