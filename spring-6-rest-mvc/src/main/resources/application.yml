@@ -4,7 +4,7 @@ spring:
 #  profiles:
 #    active: default,springHttpLog
   flyway:
-    enabled: falsehttp://localhost:8080/swagger-ui/index.html
+    enabled: false
   cache:
     cache-names: beerCache,beerListCache
 
@@ -15,7 +15,7 @@ spring:
 
 # http://localhost:8080/api-docs
 # http://localhost:8080/api-docs.yaml
-#
+# http://localhost:8080/swagger-ui/index.html
 springdoc:
   api-docs:
     path: /api-docs
