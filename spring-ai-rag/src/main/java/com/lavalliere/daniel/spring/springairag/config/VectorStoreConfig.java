@@ -25,6 +25,18 @@ import java.util.List;
 @Configuration
 public class VectorStoreConfig {
 
+    /*
+       Note that this requires a locally running instance (docker image through compose.yml)
+       AND was missing mistral model when trying to execute POST localhost:8080/ask
+       with the Content-Type: application/json  and the following JSON body
+       { "question": "What is the movie Spider-Man: No Way Home about?"}
+
+       SO add to setup a docker volume for ollama and the from the image run:   ollama pull mistral
+       (
+        possibly also ollama pull llama3.2  or could add the following to the compose.yml file:
+        entrypoint: ["/bin/bash", "-c", "ollama serve & sleep 5 && ollama pull mistral && wait"]
+       )
+     */
     @Autowired
     private OllamaApi ollamaChatClient;
 

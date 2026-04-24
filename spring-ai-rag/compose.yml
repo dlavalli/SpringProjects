@@ -24,7 +24,8 @@ services:
     ports:
       - "11434:11434"
     volumes:
-      - ollama_data:/root/.ollama
+#      - ollama_data:/root/.ollama
+      - "C:/docker_volumes/ollama:/root/.ollama"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
       interval: 30s
