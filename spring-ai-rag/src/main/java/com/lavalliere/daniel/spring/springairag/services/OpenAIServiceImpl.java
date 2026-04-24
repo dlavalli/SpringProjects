@@ -25,7 +25,8 @@ public class OpenAIServiceImpl implements OpenAIService {
     private final ChatModel chatModel;
     private final SimpleVectorStore vectorStore;
 
-    @Value("classpath:/templates/rag-prompt-template.st")
+    // @Value("classpath:/templates/rag-prompt-template.st")
+    @Value("classpath:/templates/rag-prompt-template-meta.st")
     private     Resource ragPromptTemplate;
 
     public OpenAIServiceImpl(
@@ -81,7 +82,7 @@ public class OpenAIServiceImpl implements OpenAIService {
         List<Document> documents = vectorStore.similaritySearch(
             SearchRequest.builder().query(
                 question.question()
-            ).topK(5)  // Restrict the search size
+            ).topK(5)  // Restrict the search size: Note: depending on number of match, since only loading 5 here, the one seeked may not be loaded
              .build()
         );
         List<String> contentList = documents.stream().map(Document::getText).toList();
@@ -92,7 +93,7 @@ public class OpenAIServiceImpl implements OpenAIService {
 
         // contentList.forEach(System.out::println);
 
-        // Long to execute. Takes aroun 45s locally to get the answer
+        // Long to execute. Takes around 45s locally to get the answer
         ChatResponse response = chatModel.call(prompt);
 
         Answer answer = new Answer(response.getResult().getOutput().getText());

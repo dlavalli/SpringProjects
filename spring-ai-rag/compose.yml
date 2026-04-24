@@ -26,6 +26,8 @@ services:
     volumes:
 #      - ollama_data:/root/.ollama
       - "C:/docker_volumes/ollama:/root/.ollama"
+#    environment:
+#      - OLLAMA_DEBUG=1
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
       interval: 30s
