@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: spring-ai-text-to-speech
+  ai:
+    openai:
+      # In http: would set the token as an http header :  Authorization : Bearer your_token_here
+      # api-key: ${OPENAI_API_KEY}
+      api-key: ${PERPLEXITY_API_KEY}
+      base-url: https://api.perplexity.ai
+      chat:
+        completions-path: /chat/completions
+        options:
+          model: sonar-pro
+          temperature: 0.2
