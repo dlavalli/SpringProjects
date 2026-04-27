@@ -25,6 +25,13 @@ import java.util.List;
 @Configuration
 public class VectorStoreConfig {
 
+
+
+    // NOTE that while using SimpleVectorStore stored in a file a better option would to use
+    //      would be to used a Spring AI supported Vector store db such as Milvus (https://docs.spring.io/spring-ai/reference/api/vectordbs/milvus.html)
+    //      and other supported ones (such as Apache Cassandra Vector Store)
+    //      listed in the doc here: https://docs.spring.io/spring-ai/reference/api/vectordbs.html
+
     /*
        Note that this requires a locally running instance (docker image through compose.yml)
        AND was missing mistral model when trying to execute POST localhost:8080/ask
