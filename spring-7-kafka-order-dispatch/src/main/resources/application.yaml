@@ -1,0 +1,41 @@
+spring:
+  application:
+    name: kafka-order-dispatch
+
+kafka:
+  bootstrap-servers: localhost:9092
+
+#  No longer needed, moved to configuration class to handle both JSON and String deserialization with error handling
+#  consumer:
+#    # Defines the primary class responsible for turning bytes into objects,
+#    # Handling og invalid JSON, throws only once instead of looping indefinitely
+#    value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+#    properties:
+#      # Object used for deserialization of JSON messages, must be the same as the producer
+#      spring.json.value.default.type: com.lavalliere.daniel.spring.kafkaorderdispatch.message.OrderCreated
+#      # specifies a "backup" or "wrapped" deserializer used when you are employing Spring's ErrorHandlingDeserializer
+#      # It defines the actual deserializer (like JsonDeserializer) that will do the real work inside the error-handling wrapper
+#      # The ErrorHandlingDeserializer catches any exceptions thrown by this "delegate" class.
+#      # Instead of crashing the consumer, it returns a null value (or a special wrap) and passes information about the failure
+#      # to the application, allowing you to handle the error gracefully (e.g., sending it to a Dead Letter Topic)
+#      spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
+
+
+#     TO Handle string messages instead of JSON, uncomment the following lines and comment out the above lines
+#      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+#      group-id: dispatch.order.created.consumer
+#      auto-offset-reset: earliest
+
+
+dispatch:
+  producer:
+    topic: order.dispatched
+#  consumer:
+#    id: orderConsumerClient
+#    group-id: dispatch.order.created.consumer
+#    topics: orders.created
+#    auto-offset-reset: earliest
+#    key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#    value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
