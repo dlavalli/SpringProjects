@@ -25,5 +25,13 @@ springdoc:
 
 logging:
   level:
+    root: info
     com.lavalliere.daniel.spring.spring6restmvc: debug
     org.zalando.logbook: trace
+#  file:
+#    name: logs/contact.log
+#    path: logs/
+#  logback:
+#    rollingpolicy:
+#      max-file-size: 1KB
+#      file-name-pattern: ${LOG_FILE}.%d{yyyy-MM-dd}.%i.gz

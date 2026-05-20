@@ -55,6 +55,22 @@ public class BeerController {
         return new ResponseEntity(savedBeer, headers, HttpStatus.CREATED);
     }
 
+//    // A bogus example to show you can also filter. In this case,
+//    // ifMatch contains the expected version from the service call
+//    @PutMapping(BEER_PATH_ID)
+//    public ResponseEntity updateBeerById(
+//        @PathVariable("beerId") UUID beerId,
+//        @Validated @RequestBody BeerDTO beer,
+//        @RequestHeader("If-Match") Integer ifMatch
+//        ) {
+//        if
+//        if (beerService.updateBeerById(beerId, beer).isEmpty()) {
+//            throw new NotFoundException();
+//        }
+//        return new ResponseEntity(HttpStatus.NO_CONTENT);
+//    }
+
+
     @PutMapping(BEER_PATH_ID)
     public ResponseEntity updateBeerById(@PathVariable("beerId") UUID beerId, @Validated @RequestBody BeerDTO beer) {
         if (beerService.updateBeerById(beerId, beer).isEmpty()) {
