@@ -1,6 +1,5 @@
 package com.lavalliere.daniel.spring.kafkaorderdispatch.config;
 
-import com.lavalliere.daniel.spring.kafkaorderdispatch.message.OrderDispatched;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -8,6 +7,7 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.*;
@@ -21,6 +21,7 @@ import java.util.Map;
 
 @Slf4j
 @Configuration
+@ComponentScan(basePackages = {"com.lavalliere.daniel.spring.kafkaorderdispatch"})
 public class KafkaOrderDispatchConfiguration {
 
     @Bean

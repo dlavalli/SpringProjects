@@ -29,9 +29,6 @@ kafka:
 #      auto-offset-reset: earliest
 
 
-dispatch:
-  producer:
-    topic: order.dispatched
 #  consumer:
 #    id: orderConsumerClient
 #    group-id: dispatch.order.created.consumer

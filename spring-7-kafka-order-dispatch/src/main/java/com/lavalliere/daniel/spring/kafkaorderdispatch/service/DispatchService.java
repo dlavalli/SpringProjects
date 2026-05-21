@@ -1,5 +1,6 @@
 package com.lavalliere.daniel.spring.kafkaorderdispatch.service;
 
+import com.lavalliere.daniel.spring.kafkaorderdispatch.message.DispatchPreparing;
 import com.lavalliere.daniel.spring.kafkaorderdispatch.message.OrderCreated;
 import com.lavalliere.daniel.spring.kafkaorderdispatch.message.OrderDispatched;
 import lombok.AllArgsConstructor;
@@ -16,19 +17,24 @@ import java.util.concurrent.ExecutionException;
 @Service
 public class DispatchService {
 
-    // @Value("${dispatch.producer.topic:}") // Result in "" if no value found
-    @Value("${dispatch.producer.topic:#{null}}") // Result in "null" if no value found
-    private String topic = null;
+    public static final String DISPATCH_TRACKING_TOPIC = "dispatch.tracking";
+    public static final String ORDER_DISPATCHED_TOPIC = "order.dispatched";
 
     private final KafkaTemplate<String, Object> kafkaProducer;
 
     public void process(OrderCreated orderCreated) throws ExecutionException, InterruptedException {
+        DispatchPreparing dispatchPreparing  = DispatchPreparing.builder()
+            .orderId(orderCreated.orderId())
+            .build();
+        // Async by default. Will fire and forget and to catch error would have top register a listener or use Synchronous version and manage exceptions
+        // Calling .get() makes the call sync
+        kafkaProducer.send(DISPATCH_TRACKING_TOPIC, dispatchPreparing).get();
+
         OrderDispatched orderDispatched = OrderDispatched.builder()
                 .orderId(orderCreated.orderId())
                 .build();
-
         // Async by default. Will fire and forget and to catch error would have top register a listener or use Synchronous version and manage exceptions
         // Calling .get() makes the call sync
-        kafkaProducer.send(topic, orderDispatched).get();
+        kafkaProducer.send(ORDER_DISPATCHED_TOPIC, orderDispatched).get();
     }
 }
