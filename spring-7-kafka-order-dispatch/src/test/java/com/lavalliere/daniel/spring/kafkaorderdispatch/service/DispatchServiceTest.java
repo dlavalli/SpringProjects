@@ -28,12 +28,8 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)   // Alternate using @Mock instead of @MockitoBean
 // @ExtendWith(SpringExtension.class) // Or @SpringBootTest
 class DispatchServiceTest {
-
-    @Value("${dispatch.producer.topic:#{null}}")
-    private String topic = null;
-
+    private final String applicationId = UUID.randomUUID().toString();
     private OrderCreated payload;
-    private OrderDispatched expectedDispatched;
 
     @Mock
     private KafkaTemplate<String, Object> kafkaProducerMock;
@@ -42,14 +38,11 @@ class DispatchServiceTest {
 
     @BeforeEach
     void setup() {
-        dispatcherService = new DispatchService(kafkaProducerMock);
+        dispatcherService = new DispatchService(kafkaProducerMock,applicationId);
         UUID orderId = UUID.randomUUID();
         payload = OrderCreated.builder()
             .orderId(orderId)
             .item(orderId.toString())
-            .build();
-        expectedDispatched = OrderDispatched.builder()
-            .orderId(orderId)
             .build();
     }
 

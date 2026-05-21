@@ -16,6 +16,7 @@ public class OrderCreatedHandler {
 
     private final DispatchService dispatcher;
 
+    // Register a consumer on kafka topics
     @KafkaListener(
         id = "orderConsumerClient",
         topics = "order.created",

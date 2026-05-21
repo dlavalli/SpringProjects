@@ -5,5 +5,5 @@ import lombok.Builder;
 import java.util.UUID;
 
 @Builder
-public record OrderDispatched(UUID orderId) {
+public record OrderDispatched(UUID orderId, UUID processById, String notes) {
 }

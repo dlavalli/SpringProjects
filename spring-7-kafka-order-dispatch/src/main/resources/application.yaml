@@ -4,6 +4,8 @@ spring:
 
 kafka:
   bootstrap-servers: localhost:9092
+  dispatchService:
+    applicationId: 132e8962-d68c-42a2-9b17-e42df65a3cf1
 
 #  No longer needed, moved to configuration class to handle both JSON and String deserialization with error handling
 #  consumer:

@@ -1,3 +1,5 @@
 kafka:
   # Set by the embedded broker on initialization, ensures that the test uses the correct broker address
   bootstrap-servers: ${spring.embedded.kafka.brokers}
+  dispatchService:
+    applicationId: 132e8962-d68c-42a2-9b17-e42df65a3cf1
