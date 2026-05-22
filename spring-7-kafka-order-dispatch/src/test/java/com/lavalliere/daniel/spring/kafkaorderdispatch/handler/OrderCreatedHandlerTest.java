@@ -22,8 +22,9 @@ import static org.mockito.Mockito.*;
 class OrderCreatedHandlerTest {
 
     private OrderCreatedHandler handler;
-
     private OrderCreated payload;
+    private final String key = UUID.randomUUID().toString();
+    private int partitionId = 0;
 
     @MockitoBean
     private DispatchService dispatcherServiceMockBean;
@@ -40,14 +41,14 @@ class OrderCreatedHandlerTest {
 
     @Test
     void test_listen_success() throws ExecutionException, InterruptedException {
-        handler.listen(payload);
-        verify(dispatcherServiceMockBean, times(1)).process(payload);
+        handler.listen(partitionId, key, payload);
+        verify(dispatcherServiceMockBean, times(1)).process(key, payload);
     }
 
     @Test
     void test_listen_service_throws_exception() throws ExecutionException, InterruptedException {
-        doThrow(new RuntimeException("Service failure")).when(dispatcherServiceMockBean).process(payload);
-        Exception exception = assertThrows(RuntimeException.class, () -> handler.listen(payload));
-        verify(dispatcherServiceMockBean, times(1)).process(payload);
+        doThrow(new RuntimeException("Service failure")).when(dispatcherServiceMockBean).process(key, payload);
+        Exception exception = assertThrows(RuntimeException.class, () -> handler.listen(partitionId, key, payload));
+        verify(dispatcherServiceMockBean, times(1)).process(key, payload);
     }
 }

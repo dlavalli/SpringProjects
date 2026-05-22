@@ -36,13 +36,16 @@ public class DispatchService {
     // Forward messages/event to specific topics
     // in reference to having processed previous kafka messaqge/events
     // received from the consumer from another topic
-    public void process(OrderCreated orderCreated) throws ExecutionException, InterruptedException {
+    public void process(
+        String key,
+        OrderCreated orderCreated
+    ) throws ExecutionException, InterruptedException {
         DispatchPreparing dispatchPreparing  = DispatchPreparing.builder()
             .orderId(orderCreated.orderId())
             .build();
         // Async by default. Will fire and forget and to catch error would have top register a listener or use Synchronous version and manage exceptions
         // Calling .get() makes the call sync
-        kafkaProducer.send(DISPATCH_TRACKING_TOPIC, dispatchPreparing).get();
+        kafkaProducer.send(DISPATCH_TRACKING_TOPIC, key, dispatchPreparing).get();
 
         OrderDispatched orderDispatched = OrderDispatched.builder()
                 .orderId(orderCreated.orderId())
@@ -51,8 +54,8 @@ public class DispatchService {
                 .build();
         // Async by default. Will fire and forget and to catch error would have top register a listener or use Synchronous version and manage exceptions
         // Calling .get() makes the call sync
-        kafkaProducer.send(ORDER_DISPATCHED_TOPIC, orderDispatched).get();
+        kafkaProducer.send(ORDER_DISPATCHED_TOPIC, key, orderDispatched).get();
 
-        log.info("Sent message: orderId: {} - processById: {}", orderCreated.orderId(), applicationId);
+        log.info("Sent message: key: {} - orderId: {} - processById: {}", key, orderCreated.orderId(), applicationId);
     }
 }

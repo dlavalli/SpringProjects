@@ -1,20 +1,15 @@
 package com.lavalliere.daniel.spring.kafkaorderdispatch.service;
 
-import com.lavalliere.daniel.spring.kafkaorderdispatch.handler.OrderCreatedHandler;
 import com.lavalliere.daniel.spring.kafkaorderdispatch.message.DispatchPreparing;
 import com.lavalliere.daniel.spring.kafkaorderdispatch.message.OrderCreated;
 import com.lavalliere.daniel.spring.kafkaorderdispatch.message.OrderDispatched;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+
 
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -28,6 +23,7 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)   // Alternate using @Mock instead of @MockitoBean
 // @ExtendWith(SpringExtension.class) // Or @SpringBootTest
 class DispatchServiceTest {
+    private final String key = UUID.randomUUID().toString();
     private final String applicationId = UUID.randomUUID().toString();
     private OrderCreated payload;
 
@@ -48,29 +44,29 @@ class DispatchServiceTest {
 
     @Test
     void test_process() throws ExecutionException, InterruptedException {
-        when(kafkaProducerMock.send(eq(DispatchService.ORDER_DISPATCHED_TOPIC), any(OrderDispatched.class))).thenReturn(mock(CompletableFuture.class)); // Mock the send method to return null or a Future
-        when(kafkaProducerMock.send(eq(DispatchService.DISPATCH_TRACKING_TOPIC), any(DispatchPreparing.class))).thenReturn(mock(CompletableFuture.class)); // Mock the send method to return null or a Future
-        dispatcherService.process(payload);
-        verify(kafkaProducerMock, times(1)).send(eq(DispatchService.ORDER_DISPATCHED_TOPIC), any(OrderDispatched.class));
-        verify(kafkaProducerMock, times(1)).send(eq(DispatchService.DISPATCH_TRACKING_TOPIC), any(DispatchPreparing.class));
+        when(kafkaProducerMock.send(eq(DispatchService.ORDER_DISPATCHED_TOPIC), anyString(), any(OrderDispatched.class))).thenReturn(mock(CompletableFuture.class)); // Mock the send method to return null or a Future
+        when(kafkaProducerMock.send(eq(DispatchService.DISPATCH_TRACKING_TOPIC), anyString(), any(DispatchPreparing.class))).thenReturn(mock(CompletableFuture.class)); // Mock the send method to return null or a Future
+        dispatcherService.process(key, payload);
+        verify(kafkaProducerMock, times(1)).send(eq(DispatchService.ORDER_DISPATCHED_TOPIC), anyString(), any(OrderDispatched.class));
+        verify(kafkaProducerMock, times(1)).send(eq(DispatchService.DISPATCH_TRACKING_TOPIC), anyString(), any(DispatchPreparing.class));
     }
 
     @Test
     void test_process_producer_throws_exception() {
-        doThrow(new RuntimeException("Dispatch tracking producer failure")).when(kafkaProducerMock).send(eq(DispatchService.DISPATCH_TRACKING_TOPIC), any(DispatchPreparing.class));
-        Exception exception = assertThrows(RuntimeException.class, () -> dispatcherService.process(payload));
-        verify(kafkaProducerMock, times(1)).send(eq(DispatchService.DISPATCH_TRACKING_TOPIC), any(DispatchPreparing.class));
+        doThrow(new RuntimeException("Dispatch tracking producer failure")).when(kafkaProducerMock).send(eq(DispatchService.DISPATCH_TRACKING_TOPIC), eq(key), any(DispatchPreparing.class));
+        Exception exception = assertThrows(RuntimeException.class, () -> dispatcherService.process(key, payload));
+        verify(kafkaProducerMock, times(1)).send(eq(DispatchService.DISPATCH_TRACKING_TOPIC), eq(key), any(DispatchPreparing.class));
         verifyNoMoreInteractions(kafkaProducerMock);
         assertThat(exception.getMessage(), equalTo("Dispatch tracking producer failure"));
     }
 
     @Test
     void test_process_dispatched_throws_exception() {
-        when(kafkaProducerMock.send(anyString(), any(DispatchPreparing.class))).thenReturn(mock(CompletableFuture.class)); // Mock the send method to return null or a Future for the first topic
-        doThrow(new RuntimeException("Order dispatched producer failure")).when(kafkaProducerMock).send(eq(DispatchService.ORDER_DISPATCHED_TOPIC), any());
-        Exception exception = assertThrows(RuntimeException.class, () -> dispatcherService.process(payload));
-        verify(kafkaProducerMock, times(1)).send(eq(DispatchService.DISPATCH_TRACKING_TOPIC), any(DispatchPreparing.class));
-        verify(kafkaProducerMock, times(1)).send(eq(DispatchService.ORDER_DISPATCHED_TOPIC), any(OrderDispatched.class));
+        when(kafkaProducerMock.send(anyString(), anyString(), any(DispatchPreparing.class))).thenReturn(mock(CompletableFuture.class)); // Mock the send method to return null or a Future for the first topic
+        doThrow(new RuntimeException("Order dispatched producer failure")).when(kafkaProducerMock).send(eq(DispatchService.ORDER_DISPATCHED_TOPIC), eq(key), any());
+        Exception exception = assertThrows(RuntimeException.class, () -> dispatcherService.process(key, payload));
+        verify(kafkaProducerMock, times(1)).send(eq(DispatchService.DISPATCH_TRACKING_TOPIC), eq(key), any(DispatchPreparing.class));
+        verify(kafkaProducerMock, times(1)).send(eq(DispatchService.ORDER_DISPATCHED_TOPIC), eq(key), any(OrderDispatched.class));
         assertThat(exception.getMessage(), equalTo("Order dispatched producer failure"));
     }
 }

@@ -18,6 +18,7 @@ import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.kafka.test.EmbeddedKafkaBroker;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.kafka.test.utils.ContainerTestUtils;
+import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.test.annotation.DirtiesContext;
@@ -28,7 +29,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.awaitility.Awaitility.await;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
 
 @Slf4j
 @SpringBootTest(classes = {KafkaOrderDispatchConfiguration.class })
@@ -37,10 +40,11 @@ import static org.hamcrest.Matchers.equalTo;
 @EmbeddedKafka(controlledShutdown = true)  // So the tests end cleanly
 public class OrderDispatchIntergationTest {
 
-    private void sendMessage(String topic, Object payload) throws Exception {
+    private void sendMessage(String topic, String key, Object payload) throws Exception {
         kafkaTemplate.send(MessageBuilder
             .withPayload(payload)
             .setHeader(KafkaHeaders.TOPIC, topic)
+            .setHeader(KafkaHeaders.KEY, key)
             .build()
         ).get();
     }
@@ -48,6 +52,8 @@ public class OrderDispatchIntergationTest {
     private final static String ORDER_CREATED_TOPIC = "order.created";
     private final static String ORDER_DISPATCHED_TOPIC = "order.dispatched";
     private final static String DISPATCH_TRACKING_TOPIC = "dispatch.tracking";
+    public final static String key = UUID.randomUUID().toString();
+    private int partitionId = 0;
 
     @Autowired
     private KafkaTemplate<String, Object> kafkaTemplate;
@@ -78,7 +84,9 @@ public class OrderDispatchIntergationTest {
             topics=DISPATCH_TRACKING_TOPIC
         )
         void receiveDispatchPreparing(@Payload DispatchPreparing payload) {
-            log.info("Received DispatchPreparing: {}", payload);
+            log.info("Received DispatchPreparing: key: {} payload: {}", key, payload);
+            assertThat(key, notNullValue());
+            assertThat(payload, notNullValue());
             dispatchPreparingCounter.incrementAndGet();
         }
 
@@ -86,8 +94,13 @@ public class OrderDispatchIntergationTest {
             groupId="KafkaIntegrationTest",
             topics=ORDER_DISPATCHED_TOPIC
         )
-        void receiveOrderDispatch(@Payload OrderDispatched payload) {
-            log.info("Received OrderDispatched: {}", payload);
+        void receiveOrderDispatch(
+            @Header(KafkaHeaders.RECEIVED_KEY) String key,
+            @Payload OrderDispatched payload
+        ) {
+            log.info("Received OrderDispatched: key: {} payload: {}", key, payload);
+            assertThat(key, notNullValue());
+            assertThat(payload, notNullValue());
             orderDispatchCounter.incrementAndGet();
         }
     }
@@ -104,7 +117,7 @@ public class OrderDispatchIntergationTest {
     @Test
     public void testOrderDispatchFlow() throws Exception {
         OrderCreated orderCreated = OrderCreated.builder().orderId(UUID.randomUUID()).item("my-item").build();
-        sendMessage(ORDER_CREATED_TOPIC, orderCreated);
+        sendMessage(ORDER_CREATED_TOPIC, key, orderCreated);
         await()
             .atMost(3, TimeUnit.SECONDS)
             .pollDelay(100, TimeUnit.MILLISECONDS)
