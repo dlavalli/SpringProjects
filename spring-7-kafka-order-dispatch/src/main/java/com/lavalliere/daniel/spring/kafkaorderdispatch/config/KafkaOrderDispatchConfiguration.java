@@ -24,6 +24,11 @@ import java.util.Map;
 @ComponentScan(basePackages = {"com.lavalliere.daniel.spring.kafkaorderdispatch"})
 public class KafkaOrderDispatchConfiguration {
 
+    // Using the header's event type, you need to specify the packages that are trusted to deserialize the events to.
+    // This is a security measure to prevent deserialization of malicious classes that could be included in the header
+    // This is a comma separated listed of packages and can include wildcards
+    private final static String TRUSTED_PACKAGES = "com.lavalliere.daniel.spring.kafkaorderdispatch.message";
+
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String, Object> kafkaListenerContainerFactory(
         ConsumerFactory<String, Object> consumerFactory
@@ -44,7 +49,12 @@ public class KafkaOrderDispatchConfiguration {
         config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer.class);
         config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         config.put(ErrorHandlingDeserializer.VALUE_DESERIALIZER_CLASS, JacksonJsonDeserializer.class);  // None defined by default in kafka
-        config.put(JacksonJsonDeserializer.VALUE_DEFAULT_TYPE, OrderCreated.class);
+        // config.put(JacksonJsonDeserializer.VALUE_DEFAULT_TYPE, OrderCreated.class);                  // Cannot rely on this when supporting multiple event types as the POJO will differ accordingly
+                                                                                                        // instead, rely on the message header which includes the event type
+                                                                                                        // Spring Kafka will use this to select the type to deserialize the event to
+                                                                                                        // Spring Kafka automatically adds this header when it produces messages unless configured not to
+        config.put(JacksonJsonDeserializer.TRUSTED_PACKAGES, TRUSTED_PACKAGES);                         // You also need to specify the allowed types to be used in association with the event type header
+
         return new DefaultKafkaConsumerFactory<>(config);
     }
 
