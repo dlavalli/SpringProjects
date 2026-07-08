@@ -1,16 +1,19 @@
 package com.lavalliere.daniel.spring.jpasamples;
 
+
 import com.lavalliere.daniel.spring.jpasamples.model.Customer;
 import com.lavalliere.daniel.spring.jpasamples.model.CustomerOrder;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.*;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+
 import java.math.BigDecimal;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
 
 @DataJpaTest
 public class CriteriaApiTest {
