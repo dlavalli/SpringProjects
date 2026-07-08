@@ -1,0 +1,15 @@
+CREATE TABLE IF NOT EXISTS customer (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    tier VARCHAR(20) DEFAULT 'STANDARD'
+    );
+
+CREATE TABLE IF NOT EXISTS customer_order (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    customer_id BIGINT,
+    order_date TIMESTAMP NOT NULL,
+    total_amount DECIMAL(10, 2) NOT NULL,
+    status VARCHAR(20) DEFAULT 'PENDING',
+    CONSTRAINT fk_customer FOREIGN KEY (customer_id) REFERENCES customer(id)
+    );

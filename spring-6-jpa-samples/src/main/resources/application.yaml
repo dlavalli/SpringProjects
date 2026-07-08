@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: jpa-samples
+  profiles:
+    # Available profiles are jpa-criteria, jpa-specifications
+    active: jpa-criteria
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+      # Used db name jdbc:h2:mem:testdb to login to the console
+      path: /h2-console
+  jpa:
+    # database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:db/schema.sql
+      data-locations: classpath:db/data.sql
