@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: elk-sample
+
+#  # Just defining the following is sufficient to configure the ELK Clint Configuration
+#  # BUT CANNOT USE IT IF ELK is 8.x (ie: 8.19.18) as the client for spring boot 4.x is 9.x (ie: 9.4.2)
+#  elasticsearch:
+#    uris:
+#    username:
+#    password:
+
+# Just used when the custom ELK client config is required
+ElkSample:
+  host:
+    client_url:
+    client_username:
+    client_secret:
+
+#logging:
+#  level:
+#    tracer: TRACE
+#    org.elasticsearch.client: DEBUG
+#    org.springframework.data.elasticsearch.core: DEBUG
+#
+#    # Log HTTP requests/responses from the Apache HTTP client
+#    org.apache.http: DEBUG
+#
+#    # Log Spring Data Elasticsearch core operations
+#    org.springframework.data.elasticsearch.client.wire: TRACE
+#    co.elastic.clients: DEBUG
+
+#logging:
+#  structured:
+#    format:
+#      console: ecs
+#  pattern:
+#    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level [traceId=%X{traceId:-},spanId=%X{spanId:-}] %logger{36} - %msg%n"
+#  level:
+#    com.lavalliere.daniel.spring.elksample.config.ElkSampleConfiguration: DEBUG
+
+
+
