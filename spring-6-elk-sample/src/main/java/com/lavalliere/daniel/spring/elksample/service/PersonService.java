@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PersonService {
@@ -21,15 +22,19 @@ public class PersonService {
         personRepository.save(personDto.toDocument());
     }
 
-    public Optional<PersonDocument> findById(@NotNull final String id) {
-        return personRepository.findById(id);
+    public Optional<PersonDTO> findById(@NotNull final String id) {
+        return personRepository.findById(id).map(PersonDocument::toDTO);
     }
 
-    public List<PersonDocument> findByName(@NotNull final String name) {
-        return personRepository.findByName(name);
+    public List<PersonDTO> findByName(@NotNull final String name) {
+        return personRepository.findByName(name).stream()
+                .map(PersonDocument::toDTO)
+                .collect(Collectors.toList());
     }
 
-    public List<PersonDocument> findByNameTerms(@NotNull final String name) {
-        return personRepository.findByNameTerms(name);
+    public List<PersonDTO> findByNameTerms(@NotNull final String name) {
+        return personRepository.findByNameTerms(name).stream()
+            .map(PersonDocument::toDTO)
+            .collect(Collectors.toList());
     }
 }

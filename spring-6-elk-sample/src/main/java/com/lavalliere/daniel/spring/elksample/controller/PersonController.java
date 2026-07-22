@@ -1,6 +1,5 @@
 package com.lavalliere.daniel.spring.elksample.controller;
 
-import com.lavalliere.daniel.spring.elksample.document.PersonDocument;
 import com.lavalliere.daniel.spring.elksample.dto.PersonDTO;
 import com.lavalliere.daniel.spring.elksample.service.PersonService;
 import org.springframework.http.HttpStatus;
@@ -37,7 +36,7 @@ public class PersonController {
     // ie: /api/{version}/person/searchByName?name=xxxx
     // GET http://localhost:8080/api/v1/person/search?name=Daniel%20Lavalliere
     @GetMapping(path = "/search")
-    public ResponseEntity<List<PersonDocument>> searchByName(
+    public ResponseEntity<List<PersonDTO>> searchByName(
         @PathVariable("version") String version,
         @RequestParam(value="name") String name  // required=true by default
     ) {
@@ -51,7 +50,7 @@ public class PersonController {
     // ie: /api/{version}/person/searchByTerms?name=xxxx
     // GET http://localhost:8080/api/v1/person/searchByTerms?name=Daniel%20Lavalliere
     @GetMapping(path = "/searchByTerms")
-    public ResponseEntity<List<PersonDocument>> searchByNameTerms(
+    public ResponseEntity<List<PersonDTO>> searchByNameTerms(
         @PathVariable("version") String version,
         @RequestParam(value="name") String name  // required=true by default
     ) {
@@ -65,7 +64,7 @@ public class PersonController {
     // ie: /api/{version}/person/{id}
     // GET http://localhost:8080/api/v1/person/08ec1b05-d6da-4669-b02b-bbc4cc393ff6
     @GetMapping(path = "/{id}")
-    public ResponseEntity<PersonDocument> searchById(
+    public ResponseEntity<PersonDTO> searchById(
         @PathVariable("version") String version,
         @PathVariable("id")  String id
     ) {
