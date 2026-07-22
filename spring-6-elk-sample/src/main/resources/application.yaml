@@ -16,8 +16,11 @@ ElkSample:
     client_username:
     client_secret:
 
-#logging:
-#  level:
+logging:
+  level:
+    org.springframework.security: TRACE
+    org.springframework.security.web.FilterChainProxy: TRACE
+    org.springframework.web: DEBUG
 #    tracer: TRACE
 #    org.elasticsearch.client: DEBUG
 #    org.springframework.data.elasticsearch.core: DEBUG

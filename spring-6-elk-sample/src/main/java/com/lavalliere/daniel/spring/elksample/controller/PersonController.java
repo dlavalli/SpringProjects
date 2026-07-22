@@ -1,13 +1,13 @@
 package com.lavalliere.daniel.spring.elksample.controller;
 
-import com.lavalliere.daniel.spring.elksample.document.person.PersonDocument;
+import com.lavalliere.daniel.spring.elksample.document.PersonDocument;
 import com.lavalliere.daniel.spring.elksample.dto.PersonDTO;
 import com.lavalliere.daniel.spring.elksample.service.PersonService;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/{version}/person")
@@ -30,28 +30,56 @@ public class PersonController {
     }
 
     @PostMapping
-    private ResponseEntity<PersonDocument> create(
+    @ResponseStatus(HttpStatus.CREATED) // Returns 201 Created
+    private void create(
         @PathVariable("version") String version,  // Only required if {version} is not hardcoded to a specific version ex: v1
         @RequestBody final PersonDTO personDTO
     ) {
          switch (version.toLowerCase()) {
             case "v1":
             default:
-                return ResponseEntity.ofNullable(personService.create(personDTO));
+                personService.create(personDTO);
         }
     }
 
-    /*
-    @GetMapping
-    public ResponseEntity<?> getPerson(@PathVariable("version") String version) {
+
+    // ie: /api/{version}/person/searchByName?name=xxxx
+    @GetMapping(path = "/search")
+    public ResponseEntity<List<PersonDocument>> searchByName(
+        @PathVariable("version") String version,
+        @RequestParam(value="name") String name  // required=true by default
+    ) {
         switch (version.toLowerCase()) {
             case "v1":
-                return ResponseEntity.ok(executeV1Logic());
-            case "v2":
-                return ResponseEntity.ok(executeV2Logic());
             default:
-                return ResponseEntity.badRequest().body("Unsupported API version");
+                return ResponseEntity.ok(personService.findByName(name));
         }
     }
-     */
+
+    // ie: /api/{version}/person/searchByTerms?name=xxxx
+    @GetMapping(path = "/searchByTerms")
+    public ResponseEntity<List<PersonDocument>> searchByNameTerms(
+        @PathVariable("version") String version,
+        @RequestParam(value="name") String name  // required=true by default
+    ) {
+        switch (version.toLowerCase()) {
+            case "v1":
+            default:
+                return ResponseEntity.ok(personService.findByNameTerms(name));
+        }
+    }
+
+    // ie: /api/{version}/person/{id}
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<PersonDocument> searchById(
+        @PathVariable("version") String version,
+        @PathVariable("id")  String id
+    ) {
+        switch (version.toLowerCase()) {
+            case "v1":
+            default:
+                return ResponseEntity.of(personService.findById(id));
+        }
+    }
+
 }
