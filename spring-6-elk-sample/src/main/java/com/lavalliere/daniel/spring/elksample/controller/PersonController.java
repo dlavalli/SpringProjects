@@ -11,16 +11,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/{version}/person")
-/*
-  Since testing on a single node local ELK environment, i had to run the following so that the /person index have a green status
-  else the status was yellow because no shard was allocated for it on at least 1 replica
-  PUT /person/_settings
-  {
-    "index" : {
-      "number_of_replicas" : 0
-    }
-  }
- */
 public class PersonController {
 
     private final PersonService personService;
@@ -31,6 +21,7 @@ public class PersonController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED) // Returns 201 Created
+    // POST http://localhost:8080/api/v1/person Body: { "id": "08ec1b05-d6da-4669-b02b-bbc4cc393ee6", "name": "Daniel"}  Type: Raw-JSON
     private void create(
         @PathVariable("version") String version,  // Only required if {version} is not hardcoded to a specific version ex: v1
         @RequestBody final PersonDTO personDTO
@@ -44,6 +35,7 @@ public class PersonController {
 
 
     // ie: /api/{version}/person/searchByName?name=xxxx
+    // GET http://localhost:8080/api/v1/person/search?name=Daniel%20Lavalliere
     @GetMapping(path = "/search")
     public ResponseEntity<List<PersonDocument>> searchByName(
         @PathVariable("version") String version,
@@ -57,6 +49,7 @@ public class PersonController {
     }
 
     // ie: /api/{version}/person/searchByTerms?name=xxxx
+    // GET http://localhost:8080/api/v1/person/searchByTerms?name=Daniel%20Lavalliere
     @GetMapping(path = "/searchByTerms")
     public ResponseEntity<List<PersonDocument>> searchByNameTerms(
         @PathVariable("version") String version,
@@ -70,6 +63,7 @@ public class PersonController {
     }
 
     // ie: /api/{version}/person/{id}
+    // GET http://localhost:8080/api/v1/person/08ec1b05-d6da-4669-b02b-bbc4cc393ff6
     @GetMapping(path = "/{id}")
     public ResponseEntity<PersonDocument> searchById(
         @PathVariable("version") String version,

@@ -16,6 +16,7 @@ public class IndexController {
         this.indexService = indexService;
     }
 
+    // POST http://localhost:8080/api/v1/index
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED) // Returns 201 Created
     private void create(
