@@ -23,6 +23,7 @@ public class PersonCustomRepositoryImpl<T> implements PersonCustomRepository<T> 
         this.elasticsearchOperations = elasticsearchOperations;
     }
 
+    @Override
     public List<T> searchWithMetadata(@NotNull SearchMetadata<T> searchMetadata) {
 
         // Use Operator.AND to ensure all space-separated tokens are matched
