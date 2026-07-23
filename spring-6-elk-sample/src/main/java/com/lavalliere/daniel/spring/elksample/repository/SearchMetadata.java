@@ -1,4 +1,4 @@
-package com.lavalliere.daniel.spring.elksample.repository.helpers;
+package com.lavalliere.daniel.spring.elksample.repository;
 
 import co.elastic.clients.elasticsearch._types.query_dsl.Operator;
 import jakarta.validation.constraints.NotNull;

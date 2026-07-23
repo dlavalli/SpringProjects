@@ -3,7 +3,7 @@ package com.lavalliere.daniel.spring.elksample.service;
 import com.lavalliere.daniel.spring.elksample.document.PersonDocument;
 import com.lavalliere.daniel.spring.elksample.dto.PersonDTO;
 import com.lavalliere.daniel.spring.elksample.repository.PersonRepository;
-import com.lavalliere.daniel.spring.elksample.repository.helpers.SearchMetadata;
+import com.lavalliere.daniel.spring.elksample.repository.SearchMetadata;
 import co.elastic.clients.elasticsearch._types.query_dsl.Operator;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.stereotype.Service;
