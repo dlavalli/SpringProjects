@@ -16,11 +16,16 @@ ElkSample:
     client_username:
     client_secret:
 
-logging:
-  level:
-    org.springframework.security: TRACE
-    org.springframework.security.web.FilterChainProxy: TRACE
-    org.springframework.web: DEBUG
+#logging:
+#  structured:
+#    format:
+#      console: ecs
+#  pattern:
+#    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level [traceId=%X{traceId:-},spanId=%X{spanId:-}] %logger{36} - %msg%n"
+#  level:
+#    org.springframework.security: TRACE
+#    org.springframework.security.web.FilterChainProxy: TRACE
+#    org.springframework.web: DEBUG
 #    tracer: TRACE
 #    org.elasticsearch.client: DEBUG
 #    org.springframework.data.elasticsearch.core: DEBUG
@@ -31,15 +36,9 @@ logging:
 #    # Log Spring Data Elasticsearch core operations
 #    org.springframework.data.elasticsearch.client.wire: TRACE
 #    co.elastic.clients: DEBUG
-
-#logging:
-#  structured:
-#    format:
-#      console: ecs
-#  pattern:
-#    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level [traceId=%X{traceId:-},spanId=%X{spanId:-}] %logger{36} - %msg%n"
-#  level:
+#
 #    com.lavalliere.daniel.spring.elksample.config.ElkSampleConfiguration: DEBUG
+
 
 
 
