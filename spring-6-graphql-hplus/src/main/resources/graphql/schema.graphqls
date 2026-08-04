@@ -1,0 +1,39 @@
+# A type definition used in query
+type Customer {
+    id: ID!
+    firstName: String!
+    lastName: String!
+    email: String!
+    phone: String!
+    address: String!
+    city: String!
+    state: String!
+    zipCode: String!
+}
+
+# A special type (ie: input) used for mutations
+input CustomerInput {
+    firstName: String!
+    lastName: String!
+    email: String!
+    phone: String!
+    address: String!
+    city: String!
+    state: String!
+    zipCode: String!
+}
+
+# The available query definitions
+type Query {
+    customers: [Customer]!
+    customerById(id: ID!): Customer
+    customerByEmail(email: String!): Customer
+}
+
+# The available mutation definitions
+type Mutation {
+    addCustomer(input: CustomerInput): Customer
+}
+
+
+

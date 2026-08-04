@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: graphql-hplus
+  graphql:
+    schema:
+      printer:
+        enabled: true
+    graphiql:
+      enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: none
