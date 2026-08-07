@@ -1,3 +1,7 @@
 spring:
   application:
     name: api-versioning
+#  mvc:
+#    apiversion:
+#      use:
+#        path-segment: true
