@@ -9,7 +9,7 @@ import org.springframework.web.service.registry.ImportHttpServices;
                                           // operating in what Spring calls @Bean Lite Mode. If you call a @Bean method directly in this mode, it behaves like standard Java. It bypasses
                                           // the Spring lifecycle completely, executes the method code, and returns a brand-new object instance every single time.
 
-@ImportHttpServices(TodoService.class) // New addition in Spring framework 7
+@ImportHttpServices(types = TodoService.class) // New addition in Spring framework 7
 public class HttpClientConfig {
 
     // Replacement for manually creating the bean instance in the main application...

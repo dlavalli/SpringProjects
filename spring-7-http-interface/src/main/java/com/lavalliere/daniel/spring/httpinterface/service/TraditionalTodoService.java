@@ -7,7 +7,7 @@ import org.springframework.web.client.RestClient;
 
 import java.util.List;
 
-@Service
+//@Service
 public class TraditionalTodoService {
     private final RestClient restClient;
 
