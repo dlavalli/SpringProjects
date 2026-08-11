@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: rest-client-other
+
+# See https://docs.oracle.com/en/java/javase/25/docs/api/java.net.http/module-summary.html
+#     Some possible values are: all, headers, requests, responses, ssl, handshake, frames, push, trailers
+#jdk:
+#  httpclient:
+#    HttpClient:
+#      log: all
