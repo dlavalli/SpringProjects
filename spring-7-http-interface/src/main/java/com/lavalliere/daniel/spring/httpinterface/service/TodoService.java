@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.service.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @HttpExchange(url="http://jsonplaceholder.typicode.com", accept="application/json")
@@ -16,9 +17,14 @@ public interface TodoService {
     @GetExchange("/todos")
     List<Todo> getAllTodos();
 
-    @Retryable(
-        includes = RestClientException.class, // Retry on HTTP/Client errors
-        maxRetries = 3,                       // 1 initial call + 3 retries = 4 total attempts
+    // NOTE:  Requires @EnableResilientMethods in any @Configuration class managed by the applciation
+    //        including, of course, the class annotated with @SpringBootApplication
+
+    // @Retryable({ RestClientException.class, IOException.class })
+    @Retryable(                               // NOTE: without args, it would retry for all exceptions
+        includes = { RestClientException.class, IOException.class },  // Retry on HTTP/Client errors Throwable[] argument
+        maxRetries = 3,                       // 3 retries not including 1st attempt
+        // maxAttempts = 4,                   // No longer supported BUT included initial attempt to the maxRetries+
         delay = 1000,                         // Delay in milliseconds
         multiplier = 2                        // On first attempt, it will be 1sec delay, then 2 sec, then 4sec  etc
                                               // on configuration class, @EnableResilientMethods // Required to activate core @Retryable
