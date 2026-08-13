@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: spring-7-openntelemetry
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0  # 100% sampling for development (0.1 default for production)
+  otlp:
+    metrics:
+      export:
+        url: http://localhost:4318/v1/metrics  # Collector for the metrics endpoints
+  opentelemetry:
+    tracing:
+      export:
+        otlp:
+          endpoint: http://localhost:4318/v1/traces  # Collector for the traces endpoints
+#    logging:
+#      export:
+#        otlp:
+#          endpoint: http://localhost:4318/v1/logs  # Collector for the logs endpoints
+
+server:
+  shutdown: immediate
+
+logging:
+    level:
+      root: INFO
+      com.lavalliere.danielspring.spring7openntelemetry: INFO
+      org.springframework.boot.actuator.autoconfigure.opentelemetry: DEBUG
+      org.springframework.boot.docker.compose: DEBUG
+
+    # To actually see the MDC variables inside your log lines, you must update your application.properties
+    # or application.yml file to include the identifier (e.g., %X{traceId}
+    pattern:
+      level: "%5p [MyService, %X{traceId}]"
