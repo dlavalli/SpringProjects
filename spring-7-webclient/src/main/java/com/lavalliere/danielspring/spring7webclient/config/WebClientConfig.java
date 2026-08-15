@@ -1,6 +1,7 @@
 package com.lavalliere.danielspring.spring7webclient.config;
 
 import io.netty.channel.ChannelOption;
+import io.netty.handler.ssl.SslProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import io.netty.handler.ssl.SslContext;
@@ -29,14 +30,31 @@ import java.time.Duration;
 public class WebClientConfig {
 
     @Bean
-    WebClient secureWebClient() {
-        String baseUrl = "http://jsonplaceholder.typicode.com"; // use https, not http for secure client
+    WebClient secureWebClient() throws SSLException {
+        String baseUrl = "https://jsonplaceholder.typicode.com";
+
+        SslContext sslContext = SslContextBuilder.forClient()
+            // .sslProvider(SslProvider.OPENSSL)      // optional, JDK also works, if enabled, get error: java.lang.ClassNotFoundException: io.netty.internal.tcnative.SSLContext
+            //                                        // which would require the following dependency:
+                                                      // <dependency>
+                                                      //   <groupId>io.netty</groupId>
+                                                      //   <artifactId>netty-tcnative-boringssl-static</artifactId>
+                                                      // </dependency>
+            .protocols("TLSv1.3")                     // force TLS 1.3
+            // .trustManager(InsecureTrustManagerFactory.INSTANCE) // DEV ONLY
+            .build();
 
         DefaultUriBuilderFactory uriFactory = new DefaultUriBuilderFactory(baseUrl);
         uriFactory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.TEMPLATE_AND_VALUES);
 
         HttpClient httpClient = HttpClient.create()
-            //.secure(ssl -> ssl -> ssl.sslContext(Http11SslContextSpec.forClient())
+            .secure(sslSpec -> sslSpec
+                .sslContext(sslContext)
+                // .defaultConfiguration(DefaultConfigurationType.TCP)
+                .handshakeTimeout(java.time.Duration.ofSeconds(10))
+                .closeNotifyFlushTimeout(java.time.Duration.ofSeconds(3))
+                .closeNotifyReadTimeout(java.time.Duration.ofSeconds(3))
+            )
             .responseTimeout(Duration.ofSeconds(10))
             .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000);
 
