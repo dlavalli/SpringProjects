@@ -41,7 +41,7 @@ public class RequestInterceptor implements ClientHttpRequestInterceptor {
     }
 
     private void logHeaders(HttpHeaders  headers) {
-        headers.forEach((name, values) -> values.forEach(value -> log.info("{}={}", name, value)));
+        headers.forEach((name, values) -> values.forEach(value -> log.info("HTTP Header: {}={}", name, value)));
     }
 
     private void logRequest(HttpRequest request, byte[] body) {
