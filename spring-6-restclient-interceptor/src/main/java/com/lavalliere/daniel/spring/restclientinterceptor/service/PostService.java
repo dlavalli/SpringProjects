@@ -3,12 +3,17 @@ package com.lavalliere.daniel.spring.restclientinterceptor.service;
 import com.lavalliere.daniel.spring.restclientinterceptor.domain.Post;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
+import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.http.client.JdkClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,6 +31,11 @@ public class PostService {
             // .requestInterceptor(interceptor)
             .requestInterceptor(((request, body, execution) -> {  // Alternate possible implementation of interceptor
                 log.info("Local Intercepting request: {}", request.getURI());
+                logRequest(request, body);
+
+                // See instead implementation for TodoService...
+                // var response = execution.execute(request,body);
+                // logResponse(request, response);
 
                 // Just an example. You would not use this just to update headers normally
                 request.getHeaders().add("X-Request-ID", UUID.randomUUID().toString());
@@ -35,6 +45,26 @@ public class PostService {
             }))
             .build();
     }
+
+    private void logRequest(HttpRequest request, byte[] body) {
+        // Logging implementation here
+    }
+
+    private void logResponse(HttpRequest request, ClientHttpResponse response) throws IOException {
+        // Logging implementation here
+        // NOTE that you can only read the response once!!!!
+
+        // Scenario 1:
+        // log.info("Response: {}", response);  // This will only print the instance ref so need to extract the body
+
+        // Scenario 2:
+        byte[] responseBody = response.getBody().readAllBytes();
+        log.info("Response Body: {}", new String(responseBody, StandardCharsets.UTF_8));
+
+        // BUT WILL NOT GET A REPONSE BODY ON LINE 43 above
+    }
+
+
 
 
     // NOTE : That you can also use HTTP Interface to avoid all this boiler plate
