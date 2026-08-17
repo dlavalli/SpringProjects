@@ -1,6 +1,7 @@
 package com.lavalliere.daniel.spring.restclienttest.service;
 
 import com.lavalliere.daniel.spring.restclienttest.domain.Post;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.JdkClientHttpRequestFactory;
@@ -10,20 +11,21 @@ import org.springframework.web.client.RestClient;
 import java.util.List;
 
 // Replaced with JsonPlaceholderService
+@RequiredArgsConstructor
 @Service
 public class PostService {
 
     private final RestClient restClient;
 
-    public PostService(RestClient.Builder restClientBuilder) {
-        // JdkClientHttpRequestFactory factory = new JdkClientHttpRequestFactory();    // When used. The unit test ignore the mock server and actually perform a call to the remote host
-                                                                                       // which will either end up loading to many results or will be blocked
-        this.restClient = restClientBuilder
-            .baseUrl("http://jsonplaceholder.typicode.com")
-            // .requestFactory(factory)
-            .build();
-    }
-
+    // Before beans addition in main RestClientTestApplication
+//    public PostService(RestClient.Builder restClientBuilder) {
+//        // JdkClientHttpRequestFactory factory = new JdkClientHttpRequestFactory();    // When used. The unit test ignore the mock server and actually perform a call to the remote host
+//                                                                                       // which will either end up loading to many results or will be blocked
+//        this.restClient = restClientBuilder
+//            .baseUrl("http://jsonplaceholder.typicode.com")
+//            // .requestFactory(factory)  // Basically want to change the default HTTPClient down the hood
+//            .build();
+//    }
 
     // NOTE : That you can also use HTTP Interface to avoid all this boiler plate
 
