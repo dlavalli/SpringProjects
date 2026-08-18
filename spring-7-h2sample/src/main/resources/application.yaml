@@ -1,6 +1,34 @@
 spring:
   application:
     name: spring-7-h2sample
+  datasource:
+    # Flip this between 'eager' and 'lazy' to see the feature.
+    #   eager -> a connection is borrowed the instant a transaction opens (the default)
+    #   lazy  -> a connection is borrowed only when a statement actually runs
+    # Start on 'eager' so /register pins a connection for the whole 2s remote call, then
+    # flip to 'lazy' and watch hikaricp.connections.usage drop from ~2000ms to a few ms.
+    connection-fetch: eager
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      maximum-pool-size: 10
+      connection-timeout: 30000
+      minimum-idle: 5
+      idle-timeout: 30000
+      max-lifetime: 60000
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:db/schema.sql
+      data-locations: classpath:db/data.sql
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: none
+    show-sql: true
   h2:
     console:
       enabled: true
