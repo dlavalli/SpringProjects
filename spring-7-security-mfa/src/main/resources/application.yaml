@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: spring-7-security-mfa
+
+
+logging:
+  level:
+    root: INFO
+    # For debugging Spring Security, uncomment the following line
+    # org.springframework.security: TRACE
