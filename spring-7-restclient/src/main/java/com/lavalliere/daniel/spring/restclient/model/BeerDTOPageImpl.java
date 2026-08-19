@@ -1,0 +1,30 @@
+package com.lavalliere.daniel.spring.restclient.model;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
+import java.util.List;
+
+@JsonIgnoreProperties(ignoreUnknown = true, value = "pageable")
+public class BeerDTOPageImpl<BeerDTO> extends PageImpl<com.lavalliere.daniel.spring.restclient.model.BeerDTO> {
+
+    @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+    public BeerDTOPageImpl(@JsonProperty("content") List<com.lavalliere.daniel.spring.restclient.model.BeerDTO> content, // Fully qualified required
+                           @JsonProperty("number") int page,                                                               // else does not load type
+                           @JsonProperty("size") int size,
+                           @JsonProperty("totalElements") long total) {
+        super(content, PageRequest.of(page, size), total);
+    }
+
+    public BeerDTOPageImpl(List<com.lavalliere.daniel.spring.restclient.model.BeerDTO> content, Pageable pageable, long total) {
+        super(content, pageable, total);
+    }
+
+    public BeerDTOPageImpl(List<com.lavalliere.daniel.spring.restclient.model.BeerDTO> content) {
+        super(content);
+    }
+}
