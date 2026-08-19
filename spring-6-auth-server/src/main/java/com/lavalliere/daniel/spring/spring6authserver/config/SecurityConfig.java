@@ -40,8 +40,19 @@ import java.util.UUID;
 public class SecurityConfig {
 
     // From  https://docs.spring.io/spring-authorization-server/reference/getting-started.html
+    /*
+     *   This is a minimal configuration for getting started quickly. To understand what each component is used for, see the following descriptions:
+     *   1 - A Spring Security filter chain for the Protocol Endpoints.
+     *   2 - A Spring Security filter chain for authentication.
+     *   3 - An instance of UserDetailsService for retrieving users to authenticate.
+     *   4 - An instance of RegisteredClientRepository for managing clients.
+     *   5 - An instance of com.nimbusds.jose.jwk.source.JWKSource for signing access tokens.
+     *   6 - An instance of java.security.KeyPair with keys generated on startup used to create the JWKSource above.
+     *   7 - An instance of JwtDecoder for decoding signed access tokens.
+     *   8 - An instance of AuthorizationServerSettings to configure Spring Authorization Server.
+     */
 
-    @Bean
+    @Bean // 1
     @Order(1)
     // A Spring Security filter chain for the Protocol Endpoints.
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http)
@@ -71,7 +82,7 @@ public class SecurityConfig {
         return http.build();
     }
 
-    @Bean
+    @Bean  // 2
     @Order(2)
     // A Spring Security filter chain for authentication.
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http)
@@ -87,7 +98,7 @@ public class SecurityConfig {
         return http.build();
     }
 
-    @Bean
+    @Bean // 3
     // An instance of UserDetailsService for retrieving users to authenticate.
     public UserDetailsService userDetailsService() {
         UserDetails userDetails = User.withDefaultPasswordEncoder()
@@ -99,7 +110,7 @@ public class SecurityConfig {
         return new InMemoryUserDetailsManager(userDetails);
     }
 
-    @Bean
+    @Bean // 4
     //  	An instance of RegisteredClientRepository for managing clients.
     public RegisteredClientRepository registeredClientRepository() {
         RegisteredClient registeredClient = RegisteredClient.withId(UUID.randomUUID().toString())
@@ -121,7 +132,7 @@ public class SecurityConfig {
         return new InMemoryRegisteredClientRepository(registeredClient);
     }
 
-    @Bean
+    @Bean // 5
     // An instance of com.nimbusds.jose.jwk.source.JWKSource for signing access tokens.
     public JWKSource<SecurityContext> jwkSource() {
         KeyPair keyPair = generateRsaKey();
@@ -135,6 +146,7 @@ public class SecurityConfig {
         return new ImmutableJWKSet<>(jwkSet);
     }
 
+    // 6
     // An instance of java.security.KeyPair with keys generated on startup used to create the JWKSource above.
     private static KeyPair generateRsaKey() {
         KeyPair keyPair;
@@ -149,13 +161,13 @@ public class SecurityConfig {
         return keyPair;
     }
 
-    @Bean
+    @Bean  // 7
     // An instance of JwtDecoder for decoding signed access tokens.
     public JwtDecoder jwtDecoder(JWKSource<SecurityContext> jwkSource) {
         return OAuth2AuthorizationServerConfiguration.jwtDecoder(jwkSource);
     }
 
-    @Bean
+    @Bean // 8
     // An instance of AuthorizationServerSettings to configure Spring Authorization Server.
     public AuthorizationServerSettings authorizationServerSettings() {
         return AuthorizationServerSettings.builder().build();
