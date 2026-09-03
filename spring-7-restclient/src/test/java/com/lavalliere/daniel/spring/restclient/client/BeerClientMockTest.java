@@ -76,7 +76,7 @@ public class BeerClientMockTest {
         @Bean
         ClientRegistrationRepository clientRegistrationRepository() {
             return new InMemoryClientRegistrationRepository(ClientRegistration
-                .withRegistrationId("springauth")   // from our application.properties
+                .withRegistrationId("springauth")   // from our application.yaml
                 .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
                 .clientId("test")
                 .tokenUri("test")

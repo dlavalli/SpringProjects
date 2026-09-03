@@ -29,7 +29,7 @@ public class OAuthClientInterceptor implements ClientHttpRequestInterceptor {
     public OAuthClientInterceptor(OAuth2AuthorizedClientManager manager, ClientRegistrationRepository clientRegistrationRepository) {
         this.manager = manager;
         // this.principal = createPrincipal();
-        this.clientRegistration = clientRegistrationRepository.findByRegistrationId("springauth"); // from application.properties
+        this.clientRegistration = clientRegistrationRepository.findByRegistrationId("springauth"); // from application.yaml
     }
 
     @Override

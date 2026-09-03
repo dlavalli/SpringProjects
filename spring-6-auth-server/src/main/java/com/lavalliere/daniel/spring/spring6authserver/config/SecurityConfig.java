@@ -100,6 +100,7 @@ public class SecurityConfig {
 
     @Bean // 3
     // An instance of UserDetailsService for retrieving users to authenticate.
+    // Defines a single In Memory only user using username/password (For demo only)
     public UserDetailsService userDetailsService() {
         UserDetails userDetails = User.withDefaultPasswordEncoder()
             .username("user")
@@ -112,6 +113,9 @@ public class SecurityConfig {
 
     @Bean // 4
     //  	An instance of RegisteredClientRepository for managing clients.
+    //      Defines information for a specific user registration (as if provided by an external entity such as Okta)
+    //      It defines the scopes (permisions/rights) the user has, the credentials
+    //      and register the user in Memory storage only (For testing purpose)
     public RegisteredClientRepository registeredClientRepository() {
         RegisteredClient registeredClient = RegisteredClient.withId(UUID.randomUUID().toString())
             .clientId("messaging-client")

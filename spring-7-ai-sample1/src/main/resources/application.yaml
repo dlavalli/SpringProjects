@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: spring-ai-sample1
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY}
+
+logging:
+  level:
+    root: INFO
+    org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor: DEBUG
+    # Spring AI 1.0.0-M6 / M7 / RC1:
+    # org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor: DEBUG
+    # Early 1.x Spring AI Milestones
+    # org.springframework.ai.advisor.SimpleLoggerAdvisor: DEBUG
+
+    # In Spring boot 2.x, you could also get some web client related logs
+    # org.springframework.we.client: DEBUG

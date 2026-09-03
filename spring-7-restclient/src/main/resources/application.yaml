@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: spring-6-restclient
+  threads:
+    virtual:
+      enabled: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          # Configuration based on OAuth2 Authentication Server config
+          issuer-uri: http://localhost:9000
+      client:
+        registration:
+          springauth:
+            client-id: messaging-client
+            client-secret: secret
+            scope:
+              - message.read
+              - message.write
+            authorization-grant-type: client_credentials
+            # We call this any name we want
+            provider: springauth
+        provider:
+          springauth:
+            authorization-uri: http://localhost:9000/auth2/authorize
+            token-uri: http://localhost:9000/oauth2/token
+
+# Our local API server url, which is the Spring 6 REST API server running on localhost:8080
+rest:
+  template:
+    rootUrl: http://localhost:8080
