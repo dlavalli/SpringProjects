@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1/simpsons")
+@RequestMapping
 public class SimpsonsExpertController {
     private final AIChatService chatService;
 
-    @GetMapping("/trivia")
+    @GetMapping({"/trivia","/api/v1/simpsons/trivia"})
     public ResponseEntity<String> trivia(@RequestParam(name="prompt", required = true) String prompt) {
         return ResponseEntity.ok(chatService.sendSimpsonsTrivia(prompt));
     }

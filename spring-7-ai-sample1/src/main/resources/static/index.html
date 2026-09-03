@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Springfield Trivia</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="simpsons-bg"></div>
+
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand-wrap">
+          <div class="pow-badge">Spring Boot + Spring AI</div>
+          <div>
+            <p class="eyebrow">Simpsons Trivia Lab</p>
+            <h1>Springfield Brainiac</h1>
+          </div>
+        </div>
+        <div class="status-pill">Live from Springfield</div>
+      </header>
+
+      <main class="layout">
+        <section class="chat-panel">
+          <div class="panel-header">
+            <h2>Ask a Simpsons question</h2>
+            <span class="mini-tag">D'oh!</span>
+          </div>
+
+          <form id="trivia-form" class="trivia-form">
+            <label for="prompt" class="sr-only">Your Simpsons trivia question</label>
+            <textarea
+              id="prompt"
+              rows="4"
+              placeholder="Ask about the Simpsons, the family, or Springfield..."
+            ></textarea>
+
+            <div class="button-row">
+              <button type="submit" id="submit-btn">Ask the Simpsons</button>
+              <button type="button" id="sample-btn" class="secondary-btn">Try a sample</button>
+            </div>
+          </form>
+
+          <div id="loading" class="loading hidden">Lisa is thinking...</div>
+
+          <article id="response-card" class="response-card">
+            <p class="response-label">Answer</p>
+            <div id="response-content">
+              Ask a question and the Springfield brain will answer in style.
+            </div>
+          </article>
+        </section>
+
+        <aside class="history-panel">
+          <div class="history-header">
+            <h3>Past questions</h3>
+            <button id="clear-history" class="clear-btn" type="button">Clear</button>
+          </div>
+          <ul id="history-list" class="history-list"></ul>
+        </aside>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
