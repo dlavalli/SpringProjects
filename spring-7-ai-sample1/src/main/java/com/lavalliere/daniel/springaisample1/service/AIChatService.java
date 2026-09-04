@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 public class AIChatService {
     private final ChatClient chatClient;
 
+    // https://docs.spring.io/spring-ai/docs/current/api/org/springframework/ai/chat/messages/SystemMessage.html
     private static final String systemMessageSimpsons = """
             You are a trivia expert specialized in only the TV show The Simpsons
             
@@ -29,7 +30,8 @@ public class AIChatService {
     public String sendSimpsonsTrivia(String prompt) {
         return chatClient
             .prompt(prompt)
-            .system(systemMessageSimpsons)
+            .system(systemMessageSimpsons) // The system message gives high level instructions for the conversation.
+                                           // This role typically provides high-level instructions for the conversation
             .call()
             .content();
     }
