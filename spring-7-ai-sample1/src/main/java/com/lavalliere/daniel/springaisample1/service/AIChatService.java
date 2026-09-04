@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 public class AIChatService {
     private final ChatClient chatClient;
 
+    // https://docs.spring.io/spring-ai/docs/current/api/org/springframework/ai/chat/prompt/ChatOptions.html
     // https://docs.spring.io/spring-ai/docs/current/api/org/springframework/ai/chat/client/ChatClient.ChatClientRequestSpec.html
     // https://docs.spring.io/spring-ai/docs/current/api/org/springframework/ai/chat/messages/SystemMessage.html
     private static final String systemMessageSimpsons = """
@@ -50,6 +51,7 @@ public class AIChatService {
        ));
 
        // In this example you  are setting the User message part of the prompt
+       // return chatClient().prompt().system(systemMessage).user(userPrompt).call().content();
        return chatClient().prompt().system(systemMessage).user(userPrompt).call().content();
      */
 

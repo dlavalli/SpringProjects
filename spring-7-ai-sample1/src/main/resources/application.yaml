@@ -4,6 +4,19 @@ spring:
   ai:
     openai:
       api-key: ${OPENAI_API_KEY}
+#      chat:
+#        options:
+#          model: gpt-5-mini
+#          temperature: 0.9
+#          top-p: 0.95
+#          top-k: 40
+
+#        NOTE: Key Considerations
+#          Kebab-case: Spring Boot uses relaxed binding, so top-p is the standard format for properties files,
+#                      though topP will usually be map-bound correctly as well.
+#           Mutually Exclusive: OpenAI generally recommends adjusting either temperature or top-p,
+#                      but not both at the same time, as they both modify the token selection pool.
+
 
 logging:
   level:
