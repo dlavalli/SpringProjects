@@ -10,28 +10,13 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class SpringAiSample1Application {
 
-
-    /*
-        Key Considerations
-            Kebab-case: Spring Boot uses relaxed binding, so top-p is the standard format for properties files,
-                        though topP will usually be map-bound correctly as well.
-            Mutually Exclusive: OpenAI generally recommends adjusting either temperature or top-p,
-                                but not both at the same time, as they both modify the token selection pool.
-    */
-//    @Bean
-//    public ChatOptions chatOptions() {
-//        return ChatOptions.builder()
-//            .model("gpt-5-mini")  // Can also be done from application.yaml/properties
-//            // .temperature(.99)
-//            .topP(.95)
-//            .build();
-//    }
-
     @Bean
     public ChatOptions.Builder<?> chatOptionsBuilder() {
         return ChatOptions.builder();
     }
 
+    // https://docs.spring.io/spring-ai/docs/current/api/org/springframework/ai/chat/prompt/ChatOptions.html
+    // https://docs.spring.io/spring-ai/docs/current/api/org/springframework/ai/chat/client/ChatClient.ChatClientRequestSpec.html
     @Bean
     public ChatClient chatClient(
         ChatClient.Builder clientBuilder,
