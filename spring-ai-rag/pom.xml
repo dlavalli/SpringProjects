@@ -55,10 +55,27 @@
 		</dependency>
 
 
+		<!--
+                    In Spring AI, spring-ai-vector-store (the VectorStore interface) represents the raw data layer
+                    for managing and querying embeddings, while spring-ai-advisors-vector-store (specifically via
+                    components like the QuestionAnswerAdvisor) represents the automated middleware layer that hooks
+                    a vector database directly into an LLM context flow.
+
+                    They are not competing technologies; rather, the advisor relies on the vector store to abstract away
+                    the boilerplate code required for Retrieval-Augmented Generation (RAG).
+                -->
+
+		<!-- Source: https://mvnrepository.com/artifact/org.springframework.ai/spring-ai-advisors-vector-store -->
 		<dependency>
 			<groupId>org.springframework.ai</groupId>
-			<artifactId>spring-ai-vector-store</artifactId>
+			<artifactId>spring-ai-advisors-vector-store</artifactId>
 		</dependency>
+		<!--
+        <dependency>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-vector-store</artifactId>
+        </dependency>
+        -->
 
 		<dependency>
 			<groupId>org.springframework.ai</groupId>
