@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pickering Is Springfield</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Luckiest+Guy&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+<main class="page-shell">
+    <section class="hero-card">
+        <p class="eyebrow">Springfield Book Oracle</p>
+        <h1>Ask about <span>Pickering Is Springfield</span></h1>
+        <p class="intro">
+            Fire off a question about the book and get back a friendly answer grounded in the pages
+            loaded into the RAG app.
+        </p>
+
+        <form id="rag-form" class="question-form">
+            <label class="sr-only" for="question">Ask a question about the book</label>
+            <textarea id="question" name="question" rows="4" maxlength="500"
+                      placeholder="Who is Susan, and why does the narrator doubt that is her real name?"></textarea>
+            <div class="actions">
+                <button type="submit">Ask Springfield</button>
+                <p class="helper-text">Answers come from the <code>/askrag</code> endpoint.</p>
+            </div>
+        </form>
+    </section>
+
+    <section class="answer-card" aria-live="polite" aria-busy="false">
+        <div class="answer-header">
+            <h2>Answer</h2>
+            <span id="status-pill" class="status-pill idle">Ready</span>
+        </div>
+        <div id="answer" class="answer-content placeholder">
+            Ask a question to see an answer here.
+        </div>
+    </section>
+</main>
+
+<script src="/js/app.js"></script>
+</body>
+</html>
