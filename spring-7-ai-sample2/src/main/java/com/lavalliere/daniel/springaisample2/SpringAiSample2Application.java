@@ -31,7 +31,7 @@ public class SpringAiSample2Application {
         //    }
     */
     @Bean
-    public ChatOptions.Builder<?> chatOptionsBuilder() {
+    public ChatOptions.Builder<?>    chatOptionsBuilder() {
         return ChatOptions.builder();
     }
 
@@ -62,23 +62,23 @@ public class SpringAiSample2Application {
        Best Practice: Pick either temperature or top_p to modify, and leave the other at its default value
        (1.0) to prevent unpredictable compounding effects on text generation.
      */
-    @Bean
-    public ChatClient chatClient(
-        ChatClient.Builder clientBuilder,
-        ChatOptions.Builder<?> chatOptionsBuilder
-    ) {
-        return clientBuilder
-            .defaultOptions(
-                chatOptionsBuilder
-                    .model("gpt-5-mini")  // Can also be done from application.yaml/properties
-                    // .temperature(1.0)  // Only 1 supported for this model
-                    // .topP(.95)  // Not supported for model
-                    // .topK(40)
-            )
-            .defaultAdvisors(new SimpleLoggerAdvisor())  // log chat requests using the built-in SimpleLoggerAdvisor
-            .defaultSystem(AIChatService.systemTemplate) // Set the LLM model's system behavior
-            .build();
-    }
+        @Bean
+        public ChatClient chatClient(
+            ChatClient.Builder clientBuilder,
+            ChatOptions.Builder<?> chatOptionsBuilder
+        ) {
+            return clientBuilder
+                .defaultOptions(
+                    chatOptionsBuilder
+                        .model("gpt-5-mini")  // Can also be done from application.yaml/properties
+                        // .temperature(1.0)  // Only 1 supported for this model
+                        // .topP(.95)  // Not supported for model
+                        // .topK(40)
+                )
+                .defaultAdvisors(new SimpleLoggerAdvisor())  // log chat requests using the built-in SimpleLoggerAdvisor
+                .defaultSystem(AIChatService.systemTemplate) // Set the LLM model's system behavior
+                .build();
+        }
 
     public static void main(String[] args) {
         SpringApplication.run(SpringAiSample2Application.class, args);

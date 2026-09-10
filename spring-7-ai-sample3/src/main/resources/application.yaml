@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: spring-7-ai-sample3
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY}
+      chat:
+        options:
+          model: gpt-5-mini
+  devtools:
+    restart:
+      enabled: false
+
+sfg:
+  aiapp:
+    vectorStorePath: C:\\db\\vectorstoredb\\vectorstore_spring_7_ai_sample3.json
+    documentsToLoad:
+#      - classpath:/pickeringisspringfield.pdf
+      - file:C:\\db\\pickeringisspringfield.pdf
+
+logging:
+  level:
+    root: INFO
