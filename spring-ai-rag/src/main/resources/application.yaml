@@ -41,7 +41,7 @@ spring:
 
 sfg:
   aiapp:
-    vectorStorePath: C:\\db\\vectorstoredb\\vectorstore.json
+    vectorStorePath: C:\\db\\vectorstoredb\\vectorstore_spring_ai_rag.json
     documentsToLoad:
       - classpath:/movies500.csv
 
