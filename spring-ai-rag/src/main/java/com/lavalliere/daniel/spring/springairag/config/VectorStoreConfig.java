@@ -47,6 +47,8 @@ public class VectorStoreConfig {
     @Autowired
     private OllamaApi ollamaChatClient;
 
+
+    // An example of using a local LLM model for AI prompts instead of a cloud based version
     @Bean
     @Primary
     public EmbeddingModel customOllamaEmbeddingModel() {
