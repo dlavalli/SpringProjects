@@ -1,6 +1,7 @@
 # About this project
-## Sample Spring AI project 1
+## Sample Spring AI project 2
 Implements a basic type of ChatGPT functionality using Spring Boot and the OpenAI API. This project serves as a starting point for developers looking to integrate AI capabilities into their applications.
+It adds support for prompt templates and Chat options config
 
 ## Githup Copilot Prompts used to create a base UI
 I want you to create a new index.html file in static folder /src/resources/static that will be the frontend to my tweet converter application. It will provide a pretty, in blueish tones, user interface that allows the user to interact with the tweets method. The UI should allow the user to specify low, medium, and high for emojiLevel. It should allow low, medium, and extreme for modernizationLevel. I want to use local storage to keep a history of tweets submitted. When a user clicks on a tweet in their tweet submission history, it will show all the tweet variants associated with it. Build the UI accordingly. Also, add some fun animations that are interesting and maybe even annoying and also have an animatin that lets the user know the LLM is being queried because sometimes that can take a long time , so have som spinny spinner thing or something. Lots of animations and maybe even fireworks      
