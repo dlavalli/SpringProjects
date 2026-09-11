@@ -3,6 +3,8 @@ spring:
     name: spring-7-ai-sample3
   ai:
     openai:
+#      advisory:
+#        enabled: true
       api-key: ${OPENAI_API_KEY}
       chat:
         options:
@@ -17,6 +19,9 @@ sfg:
     documentsToLoad:
 #      - classpath:/pickeringisspringfield.pdf
       - file:C:\\db\\pickeringisspringfield.pdf
+
+
+
 
 logging:
   level:

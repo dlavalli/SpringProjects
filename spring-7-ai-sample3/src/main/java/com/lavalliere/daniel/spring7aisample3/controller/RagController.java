@@ -13,7 +13,7 @@ public class RagController {
     private final AIChatService aiChatService;
 
     @GetMapping("/askrag")
-    public String rag(
+    public String askRag(
         @RequestParam(name="question", required = true) String question
 
     ) {
@@ -21,6 +21,11 @@ public class RagController {
         // so that we can use it to associate it with a persistence. For security
         // That would be internally assigned for security reason.
         // For testing purposes, provide info from api directly
-        return aiChatService.queryVectorStoreString(question, "anonymous");
+
+        // Updating ChatMemory manually directly from the code
+        // return aiChatService.queryVectorStoreString(question, "anonymous");
+
+        // Updating ChatMemory using an advisor instead (better)
+        return aiChatService.queryVectorStoreAdvised(question, "anonymous");
     }
 }

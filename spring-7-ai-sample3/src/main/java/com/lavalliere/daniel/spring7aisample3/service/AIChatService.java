@@ -3,8 +3,10 @@ package com.lavalliere.daniel.spring7aisample3.service;
 import com.fasterxml.jackson.databind.deser.std.UUIDDeserializer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.ai.chat.client.advisor.api.MemoryAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.document.Document;
@@ -24,22 +26,14 @@ public class AIChatService {
     private final ChatClient chatClient;
     private final ChatMemory chatMemory;
 
-
-    public String queryVectorStoreString(
-        String question,
-        String cid
-    ) {
-
-        // Persist the provided user message
-        chatMemory.add(cid, new UserMessage(question));
-
+    private String generatePrompt(String question) {
         // Get OpenAI to generate a query that the vector store database can work with
         var retrievalQuery = SearchRequest.builder()
             .query(question)
             .topK(5)  // This is an instruction to the vector database to dictate how many
-                      // nearest-neighbor documents should be returned during the similarity search.
-                      // This NOT a call to OpenAI's LLM generation parameter top-k (not supported by most models)
-                      // here, OpenAI simply create the actual query to send to the vector database
+            // nearest-neighbor documents should be returned during the similarity search.
+            // This NOT a call to OpenAI's LLM generation parameter top-k (not supported by most models)
+            // here, OpenAI simply create the actual query to send to the vector database
             .build();
 
         var retrievedPages = vectorStore.similaritySearch(retrievalQuery);
@@ -49,7 +43,7 @@ public class AIChatService {
             .collect(Collectors.joining(", Page from the book: "));
 
         // log.info("Augmented context: " + augmentedContext);
-        String prompt = """
+        String userMessage = """
         You are answering questions using only the context provided from the popular Pickering is Springfield book;
         If the answer is not in the context, say "I don't know, given the pages of the book I've read.
         Maybe ask me a different question ?"
@@ -61,14 +55,37 @@ public class AIChatService {
         %s
         """.formatted(augmentedContext, question);
 
-        // log.info("Question prompt: " + prompt);
+        return userMessage;
+    }
+
+    public String queryVectorStoreAdvised(
+        String question,
+        String cid
+    ) {
+        String userMessage = generatePrompt(question);
+        var prompt = chatClient.prompt().user(userMessage);
+        var advisedPrompt = prompt.advisors(spec -> spec.param(ChatMemory.CONVERSATION_ID, cid));
+        return advisedPrompt.call().content();
+    }
+
+    public String queryVectorStoreString(
+        String question,
+        String cid
+    ) {
+
+        // Persist the provided user message
+        chatMemory.add(cid, new UserMessage(question));
+
+        String userMessage = generatePrompt(question);
+
+        // log.info("Question userMessage: " + userMessage);
 
         // Retrieve the history associated with the provided cid
         var cidHistory = chatMemory.get(cid);
 
         log.info("cidHistory: cid: {} History: {}", cid, cidHistory);
 
-        var generatedContent = chatClient.prompt(prompt).messages(cidHistory).call().content();
+        var generatedContent = chatClient.prompt(userMessage).messages(cidHistory).call().content();
 
         // Persist the generated assistant message
         chatMemory.add(cid, new AssistantMessage(generatedContent));
