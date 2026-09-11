@@ -1,13 +1,18 @@
 package com.lavalliere.daniel.spring7aisample3.service;
 
+import com.fasterxml.jackson.databind.deser.std.UUIDDeserializer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.messages.AssistantMessage;
+import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.SimpleVectorStore;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -17,9 +22,16 @@ public class AIChatService {
 
     private final SimpleVectorStore vectorStore;
     private final ChatClient chatClient;
+    private final ChatMemory chatMemory;
 
 
-    public String queryVectorStoreString(String question) {
+    public String queryVectorStoreString(
+        String question,
+        String cid
+    ) {
+
+        // Persist the provided user message
+        chatMemory.add(cid, new UserMessage(question));
 
         // Get OpenAI to generate a query that the vector store database can work with
         var retrievalQuery = SearchRequest.builder()
@@ -37,8 +49,7 @@ public class AIChatService {
             .collect(Collectors.joining(", Page from the book: "));
 
         // log.info("Augmented context: " + augmentedContext);
-
-        String questionPrompt = """
+        String prompt = """
         You are answering questions using only the context provided from the popular Pickering is Springfield book;
         If the answer is not in the context, say "I don't know, given the pages of the book I've read.
         Maybe ask me a different question ?"
@@ -50,9 +61,19 @@ public class AIChatService {
         %s
         """.formatted(augmentedContext, question);
 
-        // log.info("Question prompt: " + questionPrompt);
+        // log.info("Question prompt: " + prompt);
+
+        // Retrieve the history associated with the provided cid
+        var cidHistory = chatMemory.get(cid);
+
+        log.info("cidHistory: cid: {} History: {}", cid, cidHistory);
+
+        var generatedContent = chatClient.prompt(prompt).messages(cidHistory).call().content();
+
+        // Persist the generated assistant message
+        chatMemory.add(cid, new AssistantMessage(generatedContent));
 
         // Return the generated content
-        return chatClient.prompt(questionPrompt).call().content();
+        return generatedContent;
     }
 }

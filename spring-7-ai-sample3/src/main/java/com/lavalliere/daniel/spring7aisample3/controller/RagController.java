@@ -14,8 +14,13 @@ public class RagController {
 
     @GetMapping("/askrag")
     public String rag(
-        @RequestParam(name="question") String question
+        @RequestParam(name="question", required = true) String question
+
     ) {
-        return aiChatService.queryVectorStoreString(question);
+        // Would normally have a way to generate unique ID for each user connecting
+        // so that we can use it to associate it with a persistence. For security
+        // That would be internally assigned for security reason.
+        // For testing purposes, provide info from api directly
+        return aiChatService.queryVectorStoreString(question, "anonymous");
     }
 }
